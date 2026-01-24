@@ -5,7 +5,6 @@ import com.cinema.ticketsystem.mapper.ScreeningDetailMapper;
 import com.cinema.ticketsystem.mapper.ScreeningMapper;
 import com.cinema.ticketsystem.model.Cinema;
 import com.cinema.ticketsystem.model.Movie;
-import com.cinema.ticketsystem.model.Reservation;
 import com.cinema.ticketsystem.model.Screening;
 import com.cinema.ticketsystem.repository.MovieRepository;
 import com.cinema.ticketsystem.repository.ScreeningRepository;
@@ -36,6 +35,9 @@ public class ScreeningServiceImpl implements ScreeningService {
     }
     
     public ScreeningDetailDTO getScreeningWithSeats(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Invalid screening ID");
+        }
         Screening screening = screeningRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Screening not found"));
         
@@ -87,10 +89,16 @@ public class ScreeningServiceImpl implements ScreeningService {
     
     @Transactional
     public void deleteScreening(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Invalid screening ID");
+        }
         Screening screening = screeningRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Screening not found"));
         
         // Cascade delete will automatically remove reservations
+        if (!screening.getReservations().isEmpty()) {
+            throw new RuntimeException("Cannot delete screening with existing reservations");
+        }
         screeningRepository.delete(screening);
     }
 }

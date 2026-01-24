@@ -25,6 +25,9 @@ public class CinemaServiceImpl implements CinemaService {
     }
     
     public Cinema getCinemaById(Long id) {
+        if (id==null || id<=0) {
+            throw new IllegalArgumentException("Invalid cinema ID");
+        }
         return cinemaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cinema not found"));
     }

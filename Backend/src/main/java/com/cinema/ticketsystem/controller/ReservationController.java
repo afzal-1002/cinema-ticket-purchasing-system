@@ -5,6 +5,9 @@ import com.cinema.ticketsystem.dto.ReservationDTO;
 import com.cinema.ticketsystem.security.JwtTokenUtil;
 import com.cinema.ticketsystem.service.ReservationService;
 import jakarta.validation.Valid;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -69,7 +72,8 @@ public class ReservationController {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
     }
-    
+   
+    @Getter @Setter
     private static class ErrorResponse {
         public String message;
         public ErrorResponse(String message) {

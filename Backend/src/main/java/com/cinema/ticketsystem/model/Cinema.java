@@ -28,7 +28,7 @@ public class Cinema {
     private String name;
     
     @Min(1)
-    @Column(nullable = false)
+    @Column(name = "row_count", nullable = false)
     private Integer rows;
     
     @Min(1)

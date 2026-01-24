@@ -1,0 +1,31 @@
+<section class="welcome-shell user-theme">
+  <div class="badge">Enjoy the show</div>
+  <h1>Hi {{ displayName }}, your seats await</h1>
+  <p class="lede">
+    Browse screenings, hold seats and complete reservations whenever you are ready.
+  </p>
+
+  <ul class="highlight-list">
+    <li>
+      <strong>Signed in as</strong>
+      <span>{{ email }}</span>
+    </li>
+    <li>
+      <strong>Next step</strong>
+      <span>Select a cinema, pick a movie and lock your seats for 10 minutes.</span>
+    </li>
+    <li>
+      <strong>Need help?</strong>
+      <span>Reach the support desk directly from the Help panel.</span>
+    </li>
+  </ul>
+
+  <div class="cta-row">
+    <button class="primary" type="button" disabled>
+      Explore Screenings (Soon)
+    </button>
+    <button class="ghost" type="button" (click)="logout()">
+      Sign out
+    </button>
+  </div>
+</section>

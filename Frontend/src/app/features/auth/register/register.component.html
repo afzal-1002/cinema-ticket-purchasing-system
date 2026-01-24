@@ -1,0 +1,39 @@
+<div class="register-container">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <h2>Create Account</h2>
+
+    <div class="field-pair">
+      <div>
+        <label for="firstName">First name</label>
+        <input id="firstName" formControlName="firstName" type="text" required />
+      </div>
+      <div>
+        <label for="lastName">Last name</label>
+        <input id="lastName" formControlName="lastName" type="text" required />
+      </div>
+    </div>
+
+    <div>
+      <label for="email">Email</label>
+      <input id="email" formControlName="email" type="email" required />
+    </div>
+
+    <div>
+      <label for="password">Password</label>
+      <input id="password" formControlName="password" type="password" required />
+    </div>
+
+    <div>
+      <label for="phone">Phone number</label>
+      <input id="phone" formControlName="phoneNumber" type="tel" required />
+    </div>
+
+    <div *ngIf="submitError" class="error">{{ submitError }}</div>
+
+    <button type="submit" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Creating account...' : 'Register' }}
+    </button>
+
+    <p class="switch-link">Already have an account? <a routerLink="/login">Sign in</a></p>
+  </form>
+</div>

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "seat_holds", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"screening_id", "row_number", "seat_number"})
+    @UniqueConstraint(columnNames = {"screening_id", "row_index", "seat_number"})
 })
 @Data
 @NoArgsConstructor
@@ -33,7 +33,7 @@ public class SeatHold {
     
     @NotNull
     @Min(1)
-    @Column(name = "row_number", nullable = false)
+    @Column(name = "row_index", nullable = false)
     private Integer row;
     
     @NotNull

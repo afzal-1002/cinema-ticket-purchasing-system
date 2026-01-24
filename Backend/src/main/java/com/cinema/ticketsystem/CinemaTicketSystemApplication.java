@@ -14,14 +14,18 @@ public class CinemaTicketSystemApplication {
         SpringApplication.run(CinemaTicketSystemApplication.class, args);
         System.out.println("\n" +
                 "╔════════════════════════════════════════════════════════════╗\n" +
-                "║   Cinema Ticket Purchasing System - Spring Boot Backend  ║\n" +
+                "║   Cinema Ticket Purchasing System - Spring Boot Backend    ║\n" +
                 "║                                                            ║\n" +
-                "║   Server running at: http://localhost:8080                ║\n" +
-                "║   H2 Console: http://localhost:8080/h2-console            ║\n" +
+                "║   Server running at: http://localhost:8080                 ║\n" +
+                "║   H2 Console: http://localhost:8080/h2-console             ║\n" +
                 "║                                                            ║\n" +
-                "║   Default Admin Credentials:                              ║\n" +
-                "║   Email: admin@cinema.com                                 ║\n" +
-                "║   Password: Admin123!                                     ║\n" +
+                "║   Default Admin Credentials:                               ║\n" +
+                "║   Email: admin@gmail.com                                   ║\n" +
+                "║   Password: admin123                                       ║\n" + 
+                "║                                                            ║\n" +
+                "║   Default User Credentials:                                ║\n" +
+                "║   Email: user@gmail.com                                    ║\n" +
+                "║   Password: user123                                        ║\n" +
                 "╚════════════════════════════════════════════════════════════╝\n");
     }
 }

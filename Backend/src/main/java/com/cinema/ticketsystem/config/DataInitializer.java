@@ -59,17 +59,29 @@ public class DataInitializer implements CommandLineRunner {
         }
         
         // Create admin user if not present
-        if (!userRepository.existsByEmail("admin@cinema.com")) {
+        if (!userRepository.existsByEmail("admin@gmail.com")) {
             User admin = new User();
-            admin.setEmail("admin@cinema.com");
-            admin.setPassword(passwordEncoder.encode("Admin123!"));
+            admin.setEmail("admin@gmail.com");
+            admin.setPassword(passwordEncoder.encode("admin123"));
             admin.setFirstName("Admin");
             admin.setLastName("User");
             admin.setPhoneNumber("+1234567890");
             admin.setIsAdmin(true);
             userRepository.save(admin);
-            
-            System.out.println("✅ Created admin user - Email: admin@cinema.com, Password: Admin123!");
+                  System.out.println("✅ Created admin user - Email: admin@gmail.com, Password: admin123");
+        }
+
+        // Create sample customer user if not present
+        if (!userRepository.existsByEmail("user@gmail.com")) {
+            User customer = new User();
+            customer.setEmail("user@gmail.com");
+            customer.setPassword(passwordEncoder.encode("user123"));
+            customer.setFirstName("Movie");
+            customer.setLastName("Fan");
+            customer.setPhoneNumber("+1987654321");
+            customer.setIsAdmin(false);
+            userRepository.save(customer);
+            System.out.println("✅ Created demo user - Email: user@gmail.com, Password: user123");
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.cinema.ticketsystem.service.implementation;
 
-import com.cinema.ticketsystem.mapper.SeatHoldMapper;
+
 import com.cinema.ticketsystem.model.*;
 import com.cinema.ticketsystem.repository.*;
 import com.cinema.ticketsystem.service.SeatSelectionService;

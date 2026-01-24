@@ -1,0 +1,27 @@
+<section class="welcome-shell admin-theme">
+  <div class="badge">Administrative Access</div>
+  <h1>Welcome back, {{ displayName }}</h1>
+  <p class="lede">
+    Monitor screenings, approve reservations and keep operations running smoothly.
+  </p>
+
+  <div class="info-grid">
+    <div>
+      <span class="label">Signed in as</span>
+      <p class="value">{{ email }}</p>
+    </div>
+    <div>
+      <span class="label">Next actions</span>
+      <p class="value">Review seat availability, confirm payments, broadcast announcements.</p>
+    </div>
+  </div>
+
+  <div class="cta-row">
+    <button class="primary" type="button" disabled>
+      Open Control Center
+    </button>
+    <button class="ghost" type="button" (click)="logout()">
+      Sign out
+    </button>
+  </div>
+</section>

@@ -5,6 +5,9 @@ import com.cinema.ticketsystem.dto.ScreeningDTO;
 import com.cinema.ticketsystem.dto.ScreeningDetailDTO;
 import com.cinema.ticketsystem.service.ScreeningService;
 import jakarta.validation.Valid;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -61,7 +64,8 @@ public class ScreeningController {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
     }
-    
+   
+    @Getter @Setter
     private static class ErrorResponse {
         public String message;
         public ErrorResponse(String message) {
