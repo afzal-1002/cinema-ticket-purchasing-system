@@ -2,6 +2,7 @@ package com.cinema.ticketsystem.service.implementation;
 
 import com.cinema.ticketsystem.dto.CreateReservationRequest;
 import com.cinema.ticketsystem.dto.ReservationDTO;
+import com.cinema.ticketsystem.exception.DbUpdateConcurrencyException;
 import com.cinema.ticketsystem.mapper.ReservationMapper;
 import com.cinema.ticketsystem.model.Reservation;
 import com.cinema.ticketsystem.model.Screening;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,8 +65,8 @@ public class ReservationServiceImpl implements ReservationService {
         } catch (DataIntegrityViolationException e) {
             // This handles concurrent reservations of the same seat
             throw new RuntimeException("This seat is already reserved. Please select another seat.");
-        } catch (OptimisticLockException e) {
-            throw new RuntimeException("This seat was just reserved by another user. Please select another seat.");
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("This seat was just reserved by another user. Please select another seat.", e);
         }
     }
     
@@ -75,7 +77,11 @@ public class ReservationServiceImpl implements ReservationService {
                 .orElseThrow(() -> new RuntimeException("Reservation not found"));
         
         if (reservation != null) {
-            reservationRepository.delete(reservation);
+            try {
+                reservationRepository.delete(reservation);
+            } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+                throw new DbUpdateConcurrencyException("This reservation was modified by another user. Please refresh and try again.", e);
+            }
         }
     }
     

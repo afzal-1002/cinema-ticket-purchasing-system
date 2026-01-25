@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -50,7 +51,18 @@ public class UserController {
                                        @Valid @RequestBody UpdateUserRequest request,
                                        Authentication authentication) {
         try {
-            // Check if user is updating their own profile or is admin
+            if (authentication == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new ErrorResponse("Authentication required"));
+            }
+
+            boolean isAdmin = hasAdminRole(authentication);
+            UserDTO requestingUser = userService.getUserByEmail(authentication.getName());
+            if (!isAdmin && (requestingUser == null || !requestingUser.getId().equals(id))) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(new ErrorResponse("You are not allowed to update this user"));
+            }
+
             UserDTO updatedUser = userService.updateUser(id, request);
             return ResponseEntity.ok(updatedUser);
         } catch (Exception e) {
@@ -81,5 +93,10 @@ public class UserController {
         public ErrorResponse(String message) {
             this.message = message;
         }
+    }
+
+    private boolean hasAdminRole(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .anyMatch(authority -> "ROLE_ADMIN".equals(authority.getAuthority()));
     }
 }

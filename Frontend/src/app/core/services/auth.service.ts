@@ -48,4 +48,12 @@ export class AuthService {
   isAdmin(): boolean {
     return !!this.getStoredUser()?.isAdmin;
   }
+
+  updateStoredUser(user: UserSummary): void {
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(TOKEN_KEY);
+  }
 }

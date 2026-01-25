@@ -33,4 +33,12 @@ export class UserWelcomeComponent {
     this.authService.clearSession();
     this.router.navigate(['/login']);
   }
+
+  goToProfile(): void {
+    this.router.navigate(['/profile']);
+  }
+
+  goToCinemas(): void {
+    this.router.navigate(['/cinemas']);
+  }
 }

@@ -65,6 +65,9 @@ public class Payment {
     
     @Column
     private LocalDateTime completedAt;
+
+    @Version
+    private Long version;
     
     public enum PaymentStatus {
         PENDING,

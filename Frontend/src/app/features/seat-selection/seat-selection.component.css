@@ -1,0 +1,230 @@
+section.seat-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+header .titles h1 {
+  margin: 0;
+}
+
+header .titles p {
+  margin: 0;
+  color: #666;
+}
+
+button.back {
+  border: none;
+  background: transparent;
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.alerts {
+  min-height: 1.2rem;
+}
+
+.alerts .message {
+  color: #0f766e;
+}
+
+.alerts .error {
+  color: #dc2626;
+}
+
+.seat-controls {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.selected-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.selected-tags span {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 0.85rem;
+}
+
+.seat-controls button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.seat-controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.seat-controls button.ghost {
+  background: transparent;
+  color: #475569;
+}
+
+.seat-controls button:not(.ghost) {
+  background: #2563eb;
+  color: white;
+}
+
+.seat-legend {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+}
+
+.seat-legend .seat {
+  width: 1.2rem;
+  height: 1.2rem;
+  display: inline-block;
+  margin-right: 0.4rem;
+  border-radius: 0.2rem;
+}
+
+.seat-stage {
+  text-align: center;
+  padding: 0.5rem;
+  background: #f1f5f9;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+}
+
+.seat-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.seat-row {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.seat-row button.seat {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.4rem;
+  border: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.seat-row button.seat.available {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.seat-row button.seat.held {
+  background: #fde68a;
+  color: #92400e;
+}
+
+.seat-row button.seat.reserved {
+  background: #fecdd3;
+  color: #9f1239;
+}
+
+.seat-row button.seat.my_reserved {
+  background: #c7d2fe;
+  color: #3730a3;
+}
+
+.seat-row button.seat.selected,
+.seat-legend .seat.selected {
+  background: #2563eb;
+  color: white;
+}
+
+.seat-row button.seat.selected {
+  transform: translateY(-2px);
+}
+
+.hold-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border: 1px solid #dbeafe;
+  border-radius: 0.75rem;
+  background: #eff6ff;
+}
+
+.hold-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.hold-buttons button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.hold-buttons button:first-child {
+  background: #059669;
+  color: white;
+}
+
+.hold-buttons button.ghost {
+  background: transparent;
+  color: #475569;
+}
+
+.reservations .reservation-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.reservations article {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.reservations button {
+  align-self: flex-start;
+  border: none;
+  background: #dc2626;
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+}
+
+.error {
+  color: #dc2626;
+  text-align: center;
+}

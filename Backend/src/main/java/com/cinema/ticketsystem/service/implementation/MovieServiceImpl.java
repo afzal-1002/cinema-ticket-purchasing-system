@@ -4,6 +4,7 @@ import com.cinema.ticketsystem.dto.CreateMovieRequest;
 import com.cinema.ticketsystem.dto.CreateReviewRequest;
 import com.cinema.ticketsystem.dto.MovieDTO;
 import com.cinema.ticketsystem.dto.ReviewDTO;
+import com.cinema.ticketsystem.exception.DbUpdateConcurrencyException;
 import com.cinema.ticketsystem.mapper.MovieMapper;
 import com.cinema.ticketsystem.mapper.ReviewMapper;
 import com.cinema.ticketsystem.model.Movie;
@@ -16,6 +17,8 @@ import com.cinema.ticketsystem.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import jakarta.persistence.OptimisticLockException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -105,12 +108,16 @@ public class MovieServiceImpl implements MovieService {
         movie.setPosterUrl(request.getPosterUrl());
         movie.setTrailerUrl(request.getTrailerUrl());
         movie.setReleaseDate(request.getReleaseDate());
-        movie.setIsActive(true);
+        movie.setIsActive(request.getIsActive() == null ? Boolean.TRUE : request.getIsActive());
         movie.setAverageRating(BigDecimal.ZERO);
         movie.setTotalReviews(0);
         
-        Movie savedMovie = movieRepository.save(movie);
-        return movieMapper.toDTO(savedMovie);
+        try {
+            Movie savedMovie = movieRepository.save(movie);
+            return movieMapper.toDTO(savedMovie);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The movie could not be saved due to a concurrent update.", e);
+        }
     }
     
     @Transactional
@@ -130,12 +137,17 @@ public class MovieServiceImpl implements MovieService {
         if (request.getCast() != null) movie.setCast(request.getCast());
         if (request.getPosterUrl() != null) movie.setPosterUrl(request.getPosterUrl());
         if (request.getTrailerUrl() != null) movie.setTrailerUrl(request.getTrailerUrl());
-        if (request.getReleaseDate() != null) movie.setReleaseDate(request.getReleaseDate());    
+        if (request.getReleaseDate() != null) movie.setReleaseDate(request.getReleaseDate());
+        if (request.getIsActive() != null) movie.setIsActive(request.getIsActive());
 
 
-        @SuppressWarnings("null")
-        Movie updatedMovie = movieRepository.save(movie);
-        return movieMapper.toDTO(updatedMovie);
+        try {
+            @SuppressWarnings("null")
+            Movie updatedMovie = movieRepository.save(movie);
+            return movieMapper.toDTO(updatedMovie);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The movie was modified by another user. Please reload and try again.", e);
+        }
     }
     
     @Transactional
@@ -146,13 +158,23 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = movieRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
         movie.setIsActive(false);
-        movieRepository.save(movie);
+        try {
+            movieRepository.save(movie);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The movie was modified by another user. Please reload and try again.", e);
+        }
     }
     
     @SuppressWarnings("null")
     @Transactional
     public void deleteMovie(Long id) {
-        movieRepository.deleteById(id);
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
+        try {
+            movieRepository.delete(movie);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The movie was modified by another user. Please reload and try again.", e);
+        }
     }
     
     // Review Methods
@@ -176,7 +198,12 @@ public class MovieServiceImpl implements MovieService {
         review.setRating(request.getRating());
         review.setComment(request.getComment());
         
-        Review savedReview = reviewRepository.save(review);
+        Review savedReview;
+        try {
+            savedReview = reviewRepository.save(review);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The review could not be saved because it was modified concurrently.", e);
+        }
         
         // Update movie average rating
         updateMovieAverageRating(movie.getId());
@@ -197,7 +224,12 @@ public class MovieServiceImpl implements MovieService {
         review.setRating(request.getRating());
         review.setComment(request.getComment());
         
-        Review updatedReview = reviewRepository.save(review);
+        Review updatedReview;
+        try {
+            updatedReview = reviewRepository.save(review);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The review was modified by another user. Please reload and try again.", e);
+        }
         
         // Update movie average rating
         updateMovieAverageRating(review.getMovie().getId());
@@ -216,7 +248,11 @@ public class MovieServiceImpl implements MovieService {
         }
         
         Long movieId = review.getMovie().getId();
-        reviewRepository.delete(review);
+        try {
+            reviewRepository.delete(review);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The review was modified by another user. Please reload and try again.", e);
+        }
         
         // Update movie average rating
         updateMovieAverageRating(movieId);
@@ -255,6 +291,10 @@ public class MovieServiceImpl implements MovieService {
             movie.setTotalReviews(reviews.size());
         }
         
-        movieRepository.save(movie);
+        try {
+            movieRepository.save(movie);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("Movie ratings were updated by another process. Please retry.", e);
+        }
     }
 }

@@ -1,0 +1,107 @@
+.create-shell {
+  max-width: 640px;
+  margin: 3rem auto;
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  background: #fff;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.1);
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  font-size: 0.75rem;
+  color: rgba(79, 70, 229, 0.85);
+}
+
+h1 {
+  margin: 0.25rem 0 0;
+}
+
+.lede {
+  margin: 0.5rem 0 1.5rem;
+  color: rgba(15, 23, 42, 0.7);
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.ghost,
+.secondary {
+  border-radius: 999px;
+  padding: 0.55rem 1.4rem;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  background: transparent;
+  color: #0f172a;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondary {
+  background: #f8fafc;
+  border-color: rgba(79, 70, 229, 0.3);
+  color: #4f46e5;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+select,
+input {
+  margin-top: 0.4rem;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  font-size: 1rem;
+}
+
+.error {
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  color: #b91c1c;
+}
+
+.success {
+  color: #047857;
+}
+
+.messages {
+  min-height: 1.2rem;
+}
+
+button.primary {
+  align-self: flex-start;
+  border: none;
+  border-radius: 999px;
+  padding: 0.85rem 2rem;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button.primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

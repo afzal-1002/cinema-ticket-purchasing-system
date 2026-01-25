@@ -24,8 +24,12 @@ public class MovieController {
     private final MovieService movieService;
     
     @GetMapping
-    public ResponseEntity<List<MovieDTO>> getAllMovies() {
-        return ResponseEntity.ok(movieService.getAllActiveMovies());
+    public ResponseEntity<List<MovieDTO>> getAllMovies(
+            @RequestParam(name = "includeInactive", defaultValue = "false") boolean includeInactive) {
+        List<MovieDTO> movies = includeInactive
+                ? movieService.getAllMovies()
+                : movieService.getAllActiveMovies();
+        return ResponseEntity.ok(movies);
     }
     
     @GetMapping("/{id}")

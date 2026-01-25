@@ -1,0 +1,67 @@
+<section class="create-shell">
+  <header>
+    <div>
+      <p class="eyebrow">New screening</p>
+      <h1>Schedule a showtime</h1>
+      <p class="lede">Pair a movie with a cinema, pick the start time and ticket price.</p>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="ghost" (click)="goBack()">Back</button>
+      <button type="button" class="secondary" (click)="goHome()">Home</button>
+    </div>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <label>
+      <span>Cinema</span>
+      <select formControlName="cinemaId">
+        <option value="" disabled>Select a cinema</option>
+        <option *ngFor="let cinema of cinemas" [value]="cinema.id">
+          {{ cinema.name }} — {{ cinema.rows }} × {{ cinema.seatsPerRow }}
+        </option>
+      </select>
+      <small class="error" *ngIf="form.get('cinemaId')?.invalid && form.get('cinemaId')?.touched">
+        Choose a cinema.
+      </small>
+    </label>
+
+    <label>
+      <span>Movie</span>
+      <select formControlName="movieId">
+        <option value="" disabled>Select a movie</option>
+        <option *ngFor="let movie of movies" [value]="movie.id">
+          {{ movie.title }}
+        </option>
+      </select>
+      <small class="error" *ngIf="form.get('movieId')?.invalid && form.get('movieId')?.touched">
+        Choose a movie.
+      </small>
+    </label>
+
+    <label>
+      <span>Start date & time</span>
+      <input type="datetime-local" formControlName="startDateTime" />
+      <small class="error" *ngIf="form.get('startDateTime')?.invalid && form.get('startDateTime')?.touched">
+        Provide the start date and time.
+      </small>
+    </label>
+
+    <label>
+      <span>Ticket price</span>
+      <input type="number" min="1" step="0.5" formControlName="ticketPrice" placeholder="12" />
+      <small class="error" *ngIf="form.get('ticketPrice')?.invalid && form.get('ticketPrice')?.touched">
+        Ticket price must be at least 1.
+      </small>
+    </label>
+
+    <div class="messages">
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+      <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+    </div>
+
+    <button class="primary" type="submit" [disabled]="form.invalid || isSaving">
+      <span *ngIf="!isSaving">Create screening</span>
+      <span *ngIf="isSaving">Saving…</span>
+    </button>
+  </form>
+</section>

@@ -1,0 +1,65 @@
+<section class="screenings-shell">
+  <header>
+    <div>
+      <p class="eyebrow">Screenings</p>
+      <h1>Manage all showtimes</h1>
+      <p class="lede">Create, inspect, or retire screenings across every cinema.</p>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="back-button" (click)="goBack()">Back</button>
+      <button class="primary" routerLink="/screenings/new">Create screening</button>
+    </div>
+  </header>
+
+  <div class="state" *ngIf="isLoading">Loading screenings…</div>
+  <div class="state error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</div>
+  <div class="state" *ngIf="!isLoading && !errorMessage && screenings.length === 0">
+    No screenings yet. Start by creating one.
+  </div>
+
+  <div class="table-wrapper" *ngIf="!isLoading && !errorMessage && screenings.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Movie</th>
+          <th>Cinema</th>
+          <th>Start</th>
+          <th>Seats</th>
+          <th>Price</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let screening of screenings; trackBy: trackById">
+          <td>
+            <strong>{{ screening.movieTitle }}</strong>
+            <span class="muted">#{{ screening.id }}</span>
+          </td>
+          <td>
+            <span>{{ screening.cinemaName }}</span>
+            <span class="muted">
+              {{ screening.rows }} × {{ screening.seatsPerRow }}
+            </span>
+          </td>
+          <td>
+            {{ screening.startDateTime | date: 'medium' }}
+          </td>
+          <td>
+            {{ screening.rows * screening.seatsPerRow }} seats
+          </td>
+          <td>
+            {{ screening.ticketPrice | currency }}
+          </td>
+          <td class="actions">
+            <button type="button" class="ghost" (click)="viewDetails(screening)">
+              View
+            </button>
+            <button type="button" class="danger" (click)="confirmDelete(screening)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

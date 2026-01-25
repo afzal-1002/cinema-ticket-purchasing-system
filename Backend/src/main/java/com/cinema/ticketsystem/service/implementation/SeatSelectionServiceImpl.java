@@ -1,6 +1,6 @@
 package com.cinema.ticketsystem.service.implementation;
 
-
+import com.cinema.ticketsystem.exception.DbUpdateConcurrencyException;
 import com.cinema.ticketsystem.model.*;
 import com.cinema.ticketsystem.repository.*;
 import com.cinema.ticketsystem.service.SeatSelectionService;
@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import jakarta.persistence.OptimisticLockException;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -127,15 +129,16 @@ public class SeatSelectionServiceImpl implements SeatSelectionService {
             }
             
             // Create hold
-            SeatHold hold = new SeatHold();
-            hold.setUser(user);
-            hold.setScreening(screening);
-            hold.setRow(row);
-            hold.setSeat(seatNumber);
-            hold.setExpiresAt(expiresAt);
-            hold.setIsActive(true);
+                SeatHold hold = new SeatHold();
+                hold.setUser(user);
+                hold.setScreening(screening);
+                hold.setRow(row);
+                hold.setSeat(seatNumber);
+                hold.setExpiresAt(expiresAt);
+                hold.setIsActive(true);
             
-            createdHolds.add(seatHoldRepository.save(hold));
+                createdHolds.add(saveSeatHoldWithConcurrencyHandling(hold,
+                    "Seat hold could not be created because it was modified concurrently."));
         }
         
         Map<String, Object> result = new HashMap<>();
@@ -161,7 +164,7 @@ public class SeatSelectionServiceImpl implements SeatSelectionService {
             }
             
             hold.setIsActive(false);
-            seatHoldRepository.save(hold);
+            saveSeatHoldWithConcurrencyHandling(hold, "Seat hold could not be released due to concurrent updates.");
         }
     }
     
@@ -169,7 +172,7 @@ public class SeatSelectionServiceImpl implements SeatSelectionService {
     public void releaseAllUserHolds(Long userId) {
         List<SeatHold> userHolds = seatHoldRepository.findByUserIdAndIsActiveTrue(userId);
         userHolds.forEach(hold -> hold.setIsActive(false));
-        seatHoldRepository.saveAll(userHolds);
+        saveSeatHoldsWithConcurrencyHandling(userHolds, "User seat holds could not be released due to concurrent updates.");
     }
     
     @Transactional(readOnly = true)
@@ -199,6 +202,25 @@ public class SeatSelectionServiceImpl implements SeatSelectionService {
         int deactivated = seatHoldRepository.deactivateExpiredHolds(LocalDateTime.now());
         if (deactivated > 0) {
             System.out.println("Deactivated " + deactivated + " expired seat holds");
+        }
+    }
+
+    @SuppressWarnings("null")
+    private SeatHold saveSeatHoldWithConcurrencyHandling(SeatHold hold, String message) {
+        try {
+            return seatHoldRepository.save(hold);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException(message, e);
+        }
+    }
+
+    
+    @SuppressWarnings("null")
+    private void saveSeatHoldsWithConcurrencyHandling(List<SeatHold> holds, String message) {
+        try {
+            seatHoldRepository.saveAll(holds);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException(message, e);
         }
     }
 }

@@ -17,8 +17,17 @@
   </div>
 
   <div class="cta-row">
-    <button class="primary" type="button" disabled>
-      Open Control Center
+    <button class="primary" type="button" (click)="goToScreenings()">
+      Manage Screenings
+    </button>
+    <button class="secondary" type="button" (click)="goToMovies()">
+      Manage Movies
+    </button>
+    <button class="secondary" type="button" (click)="goToCinemas()">
+      Browse Cinemas
+    </button>
+    <button class="ghost" type="button" (click)="goToProfile()">
+      Manage profile
     </button>
     <button class="ghost" type="button" (click)="logout()">
       Sign out

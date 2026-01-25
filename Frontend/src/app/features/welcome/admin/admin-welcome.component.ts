@@ -33,4 +33,20 @@ export class AdminWelcomeComponent {
     this.authService.clearSession();
     this.router.navigate(['/login']);
   }
+
+  goToProfile(): void {
+    this.router.navigate(['/profile']);
+  }
+
+  goToCinemas(): void {
+    this.router.navigate(['/cinemas']);
+  }
+
+  goToScreenings(): void {
+    this.router.navigate(['/screenings']);
+  }
+
+  goToMovies(): void {
+    this.router.navigate(['/movies']);
+  }
 }

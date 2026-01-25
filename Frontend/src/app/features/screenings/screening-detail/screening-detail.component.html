@@ -1,0 +1,42 @@
+<section class="detail-shell" *ngIf="!isLoading && screening as detail; else loading">
+  <header>
+    <button class="back-button" type="button" (click)="back()">Back</button>
+    <div>
+      <p class="eyebrow">Screening</p>
+      <h1>{{ detail.movieTitle }}</h1>
+      <p class="lede">{{ detail.cinemaName }} • {{ detail.startDateTime | date: 'fullDate' }} at {{ detail.startDateTime | date: 'shortTime' }}</p>
+    </div>
+  </header>
+
+  <div class="meta-grid">
+    <div>
+      <span class="label">Ticket price</span>
+      <p class="value">{{ detail.ticketPrice | currency }}</p>
+    </div>
+    <div>
+      <span class="label">Auditorium size</span>
+      <p class="value">{{ detail.rows }} rows × {{ detail.seatsPerRow }} seats</p>
+    </div>
+    <div>
+      <span class="label">Total seats</span>
+      <p class="value">{{ detail.rows * detail.seatsPerRow }}</p>
+    </div>
+  </div>
+
+  <section class="seat-map" aria-label="Seat map visualization">
+    <div class="row" *ngFor="let seatRow of seatRows">
+      <span class="seat"
+            *ngFor="let seat of seatRow"
+            [class.reserved]="seat.isReserved"
+            [attr.title]="'Row ' + seat.row + ' Seat ' + seat.seat">
+      </span>
+    </div>
+  </section>
+</section>
+
+<ng-template #loading>
+  <section class="detail-shell loading">
+    <p *ngIf="isLoading">Loading screening…</p>
+    <p *ngIf="!isLoading && errorMessage" class="error">{{ errorMessage }}</p>
+  </section>
+</ng-template>

@@ -10,4 +10,10 @@ public interface CinemaService {
     List<CinemaDTO> getAllCinemas();
     
     Cinema getCinemaById(Long id);
+
+    CinemaDTO createCinema(CinemaDTO cinemaDTO);
+
+    CinemaDTO updateCinema(Long id, CinemaDTO cinemaDTO);
+
+    void deleteCinema(Long id);
 }

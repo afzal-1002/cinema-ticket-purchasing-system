@@ -1,0 +1,32 @@
+<section class="user-screenings-shell">
+  <header>
+    <div>
+      <p class="eyebrow">Screenings</p>
+      <h1>Pick a session</h1>
+      <p class="lede">Browse every cinema, then jump into seat selection.</p>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="ghost" (click)="goBack()">Back</button>
+      <button type="button" class="primary" (click)="fetchScreenings()">Refresh</button>
+    </div>
+  </header>
+
+  <p class="state" *ngIf="isLoading">Loading screenings…</p>
+  <p class="state error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+  <p class="state" *ngIf="!isLoading && !errorMessage && screenings.length === 0">
+    No screenings scheduled yet.
+  </p>
+
+  <div class="grid" *ngIf="!isLoading && !errorMessage && screenings.length > 0">
+    <article class="card" *ngFor="let screening of screenings; trackBy: trackById">
+      <h2>{{ screening.movieTitle }}</h2>
+      <p class="meta">
+        <span>{{ screening.cinemaName }}</span>
+        <span>•</span>
+        <span>{{ screening.startDateTime | date: 'fullDate' }} at {{ screening.startDateTime | date: 'shortTime' }}</span>
+      </p>
+      <p class="seats">{{ screening.rows }} rows × {{ screening.seatsPerRow }} seats</p>
+      <button type="button" class="primary" (click)="selectSeats(screening)">Select seats</button>
+    </article>
+  </div>
+</section>

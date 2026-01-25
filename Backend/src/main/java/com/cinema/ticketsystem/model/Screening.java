@@ -47,4 +47,10 @@ public class Screening {
     
     @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "screening", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SeatHold> seatHolds = new ArrayList<>();
+
+    @Version
+    private Long version;
 }

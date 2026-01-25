@@ -37,4 +37,7 @@ public class Cinema {
     
     @OneToMany(mappedBy = "cinema", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Screening> screenings = new ArrayList<>();
+
+    @Version
+    private Long version;
 }

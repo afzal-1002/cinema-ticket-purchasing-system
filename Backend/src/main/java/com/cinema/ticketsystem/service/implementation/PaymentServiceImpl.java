@@ -1,11 +1,14 @@
 package com.cinema.ticketsystem.service.implementation;
 
+import com.cinema.ticketsystem.exception.DbUpdateConcurrencyException;
 import com.cinema.ticketsystem.model.*;
 import com.cinema.ticketsystem.repository.*;
 import com.cinema.ticketsystem.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import jakarta.persistence.OptimisticLockException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -57,7 +60,8 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setPaymentMethod(paymentMethod);
         payment.setStatus(Payment.PaymentStatus.PENDING);
         
-        Payment savedPayment = paymentRepository.save(payment);
+        Payment savedPayment = savePaymentWithConcurrencyHandling(payment,
+            "The payment could not be initiated because it was modified concurrently.");
         
         Map<String, Object> response = new HashMap<>();
         response.put("paymentId", savedPayment.getId());
@@ -88,7 +92,7 @@ public class PaymentServiceImpl implements PaymentService {
         }
         
         payment.setStatus(Payment.PaymentStatus.PROCESSING);
-        paymentRepository.save(payment);
+        savePaymentWithConcurrencyHandling(payment, "The payment status could not be updated to processing due to concurrency issues.");
         
         try {
             // Simulate payment processing
@@ -100,7 +104,8 @@ public class PaymentServiceImpl implements PaymentService {
             payment.setCompletedAt(LocalDateTime.now());
             payment.setPaymentDetails(convertMapToJson(paymentDetails));
             
-            Payment completedPayment = paymentRepository.save(payment);
+                Payment completedPayment = savePaymentWithConcurrencyHandling(payment,
+                    "The payment could not be completed because it was modified concurrently.");
             
             Map<String, Object> response = new HashMap<>();
             response.put("paymentId", completedPayment.getId());
@@ -112,10 +117,12 @@ public class PaymentServiceImpl implements PaymentService {
             
             return response;
             
+        } catch (DbUpdateConcurrencyException e) {
+            throw e;
         } catch (Exception e) {
             payment.setStatus(Payment.PaymentStatus.FAILED);
             payment.setFailureReason(e.getMessage());
-            paymentRepository.save(payment);
+            savePaymentWithConcurrencyHandling(payment, "Failed to mark payment as failed due to concurrency issues.");
             
             throw new RuntimeException("Payment processing failed: " + e.getMessage());
         }
@@ -137,7 +144,8 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setStatus(Payment.PaymentStatus.REFUNDED);
         payment.setFailureReason("Refund reason: " + reason);
         
-        Payment refundedPayment = paymentRepository.save(payment);
+        Payment refundedPayment = savePaymentWithConcurrencyHandling(payment,
+            "The payment could not be refunded because it was modified concurrently.");
         
         Map<String, Object> response = new HashMap<>();
         response.put("paymentId", refundedPayment.getId());
@@ -213,5 +221,14 @@ public class PaymentServiceImpl implements PaymentService {
         json.append("}");
         
         return json.toString();
+    }
+
+    @SuppressWarnings("null")
+    private Payment savePaymentWithConcurrencyHandling(Payment payment, String message) {
+        try {
+            return paymentRepository.save(payment);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException(message, e);
+        }
     }
 }

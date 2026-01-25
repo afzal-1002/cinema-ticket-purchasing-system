@@ -1,0 +1,60 @@
+<section class="profile-shell" *ngIf="!isLoading; else loading">
+  <div class="page-actions">
+    <button type="button" class="back-button" (click)="goBack()">Back</button>
+  </div>
+  <header>
+    <p class="eyebrow">Account</p>
+    <h1>Personal details</h1>
+    <p class="lede">Update how your name and phone number appear across tickets and notifications.</p>
+  </header>
+
+  <form [formGroup]="profileForm" (ngSubmit)="submit()" novalidate>
+    <div class="field-grid">
+      <label>
+        <span>First name</span>
+        <input type="text" formControlName="firstName" placeholder="Jane" />
+        <small class="error" *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)">
+          First name is required and must be under 40 characters.
+        </small>
+      </label>
+
+      <label>
+        <span>Last name</span>
+        <input type="text" formControlName="lastName" placeholder="Doe" />
+        <small class="error" *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)">
+          Last name is required and must be under 40 characters.
+        </small>
+      </label>
+
+      <label class="full">
+        <span>Phone number</span>
+        <input type="tel" formControlName="phoneNumber" placeholder="+1 555 555 0199" />
+        <small class="hint">Include your country code so cinema staff can reach you.</small>
+        <small class="error" *ngIf="phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)">
+          Please enter a valid phone number.
+        </small>
+      </label>
+    </div>
+
+    <div class="messages" *ngIf="serverMessage || serverError">
+      <p class="success" *ngIf="serverMessage">{{ serverMessage }}</p>
+      <p class="error" *ngIf="serverError">{{ serverError }}</p>
+    </div>
+
+    <div class="actions">
+      <button class="primary" type="submit" [disabled]="profileForm.invalid || isSaving">
+        <span *ngIf="!isSaving">Save changes</span>
+        <span *ngIf="isSaving">Saving…</span>
+      </button>
+      <button class="ghost" type="button" (click)="loadProfile()" [disabled]="isSaving">
+        Reset
+      </button>
+    </div>
+  </form>
+</section>
+
+<ng-template #loading>
+  <section class="profile-shell loading">
+    <p>Loading your profile…</p>
+  </section>
+</ng-template>

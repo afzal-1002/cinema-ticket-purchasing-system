@@ -1,0 +1,102 @@
+<section class="seat-selection" *ngIf="screeningInfo as info; else loading">
+  <header>
+    <button class="back" (click)="goBack()">Back to Screenings</button>
+    <div class="titles">
+      <h1>{{ info.movieTitle }}</h1>
+      <p>
+        {{ info.cinemaName }} ·
+        {{ info.startDateTime | date: 'fullDate' }} ·
+        {{ info.startDateTime | date: 'shortTime' }}
+      </p>
+    </div>
+  </header>
+
+  <div class="alerts">
+    <p class="message" *ngIf="message">{{ message }}</p>
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+
+  <div class="seat-controls">
+    <div>
+      <p>Selected: <strong>{{ selectedSeats.length }}</strong></p>
+      <div class="selected-tags">
+        <span *ngFor="let seat of selectedSeats">R{{ seat.row }} · S{{ seat.seat }}</span>
+      </div>
+    </div>
+    <div class="hold-actions">
+      <button
+        (click)="holdSelectedSeats()"
+        [disabled]="!selectedSeats.length || isHolding"
+      >
+        {{ isHolding ? 'Holding…' : 'Hold Seats' }}
+      </button>
+      <button class="ghost" (click)="selectedSeats = []" [disabled]="!selectedSeats.length">
+        Clear Selection
+      </button>
+    </div>
+  </div>
+
+  <section class="seat-legend">
+    <div><span class="seat available"></span> Available</div>
+    <div><span class="seat held"></span> Held</div>
+    <div><span class="seat reserved"></span> Reserved</div>
+    <div><span class="seat my_reserved"></span> My Reservations</div>
+    <div><span class="seat selected"></span> Selected</div>
+  </section>
+
+  <div class="seat-stage">Screen</div>
+
+  <div class="seat-grid" *ngIf="seatRows.length; else noSeats">
+    <div class="seat-row" *ngFor="let row of seatRows">
+      <button
+        type="button"
+        *ngFor="let seat of row"
+        [disabled]="seat.status !== 'AVAILABLE' && !isSelected(seat)"
+        [ngClass]="seatClass(seat)"
+        (click)="toggleSeat(seat)"
+      >
+        {{ seat.row }}-{{ seat.seat }}
+      </button>
+    </div>
+  </div>
+
+  <section *ngIf="activeHold" class="hold-panel">
+    <div>
+      <h2>Hold Active</h2>
+      <p>Expires: {{ holdCountdownLabel || activeHold.expiresAt }}</p>
+      <p>Seats: {{ activeHold.seats.length }}</p>
+      <div class="selected-tags">
+        <span *ngFor="let seat of activeHold.seats">R{{ seat.row }} · S{{ seat.seat }}</span>
+      </div>
+    </div>
+    <div class="hold-buttons">
+      <button (click)="confirmReservation()" [disabled]="isConfirming">
+        {{ isConfirming ? 'Confirming…' : 'Confirm Reservation' }}
+      </button>
+      <button class="ghost" (click)="releaseHold()">Release Hold</button>
+    </div>
+  </section>
+
+  <section class="reservations" *ngIf="myReservations.length">
+    <h2>Your Reservations</h2>
+    <div class="reservation-list">
+      <article *ngFor="let reservation of myReservations">
+        <p>Seat R{{ reservation.row }} · S{{ reservation.seat }}</p>
+        <p>Status: {{ reservation.status || 'CONFIRMED' }}</p>
+        <button (click)="cancelReservation(reservation)">Cancel</button>
+      </article>
+    </div>
+  </section>
+</section>
+
+<ng-template #loading>
+  <div class="loading" *ngIf="isLoading; else notFound">Loading seat map…</div>
+</ng-template>
+
+<ng-template #noSeats>
+  <p class="error">No seats defined for this screening.</p>
+</ng-template>
+
+<ng-template #notFound>
+  <p class="error">{{ errorMessage || 'Screening not found.' }}</p>
+</ng-template>

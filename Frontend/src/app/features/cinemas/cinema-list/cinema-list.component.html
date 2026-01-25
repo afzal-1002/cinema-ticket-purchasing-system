@@ -1,0 +1,111 @@
+<section class="cinema-shell">
+  <div class="page-actions">
+    <button type="button" class="back-button" (click)="goBack()">Back</button>
+    <div class="admin-actions">
+      <button type="button" class="pill pill--subtle" *ngIf="editorVisible" (click)="cancelEditor()">
+        Cancel
+      </button>
+      <button type="button" class="pill pill--primary" (click)="startCreate()">
+        Add cinema
+      </button>
+    </div>
+  </div>
+  <p class="alert" *ngIf="formError && !editorVisible">{{ formError }}</p>
+  <header>
+    <p class="eyebrow">Cinemas</p>
+    <h1>Choose your auditorium</h1>
+    <p class="lede">
+      Every hall is pre-configured and ready; pick the room size that fits your next premiere.
+    </p>
+  </header>
+
+  <section class="editor-panel" *ngIf="editorVisible">
+    <div>
+      <p class="eyebrow">{{ editorMode === 'create' ? 'New cinema' : 'Update cinema' }}</p>
+      <h2>{{ editorMode === 'create' ? 'Add a fresh auditorium' : 'Refine auditorium details' }}</h2>
+      <p class="lede">
+        Define capacity and a memorable name. Updates propagate to screenings immediately.
+      </p>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="submitEditor()" novalidate>
+      <label class="field">
+        <span>Name</span>
+        <input type="text" formControlName="name" placeholder="Cinema Grand Plaza" />
+        <small class="error" *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+          Provide a name up to 100 characters.
+        </small>
+      </label>
+
+      <label class="field">
+        <span>Rows</span>
+        <input type="number" min="1" formControlName="rows" />
+        <small class="error" *ngIf="form.get('rows')?.invalid && form.get('rows')?.touched">
+          Rows must be at least 1.
+        </small>
+      </label>
+
+      <label class="field">
+        <span>Seats per row</span>
+        <input type="number" min="1" formControlName="seatsPerRow" />
+        <small class="error" *ngIf="form.get('seatsPerRow')?.invalid && form.get('seatsPerRow')?.touched">
+          Seats per row must be at least 1.
+        </small>
+      </label>
+
+      <div class="editor-actions">
+        <p class="error" *ngIf="formError">{{ formError }}</p>
+        <button class="pill pill--primary" type="submit" [disabled]="form.invalid || isSaving">
+          <span *ngIf="!isSaving">{{ editorMode === 'create' ? 'Create cinema' : 'Save changes' }}</span>
+          <span *ngIf="isSaving">Saving…</span>
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <div class="state" *ngIf="isLoading">
+    <p>Loading cinema catalog…</p>
+  </div>
+
+  <div class="state" *ngIf="!isLoading && errorMessage">
+    <p>{{ errorMessage }}</p>
+    <button type="button" (click)="fetchCinemas()">Retry</button>
+  </div>
+
+  <div class="state" *ngIf="!isLoading && !errorMessage && cinemas.length === 0">
+    <p>No cinemas available yet.</p>
+  </div>
+
+  <div class="grid" *ngIf="!isLoading && !errorMessage && cinemas.length > 0">
+    <article class="card" *ngFor="let cinema of cinemas; trackBy: trackById">
+      <div class="card-header">
+        <h2>{{ cinema.name }}</h2>
+        <span class="badge">{{ totalSeats(cinema) }} seats</span>
+      </div>
+      <p class="dimensions">
+        <span>{{ cinema.rows }} rows</span>
+        <span class="dot"></span>
+        <span>{{ cinema.seatsPerRow }} seats / row</span>
+      </p>
+      <div class="grid-visual">
+        <div class="row" *ngFor="let _ of buildArray(cinema.rows); let rowIndex = index">
+          <span *ngFor="let __ of buildArray(cinema.seatsPerRow); let seatIndex = index"
+                class="seat"
+                [attr.aria-label]="'Row ' + (rowIndex + 1) + ' Seat ' + (seatIndex + 1)">
+          </span>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button type="button" class="pill pill--subtle" (click)="startEdit(cinema)">
+          Update
+        </button>
+        <button type="button"
+                class="pill pill--danger"
+                (click)="deleteCinema(cinema)"
+                [disabled]="deletingId === cinema.id">
+          <span *ngIf="deletingId === cinema.id">Removing…</span>
+          <span *ngIf="deletingId !== cinema.id">Delete</span>
+        </button>
+      </div>
+    </article>
+  </div>
+</section>

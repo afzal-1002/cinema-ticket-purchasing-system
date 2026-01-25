@@ -19,4 +19,25 @@ public class CinemaMapper {
         dto.setSeatsPerRow(cinema.getSeatsPerRow());
         return dto;
     }
+
+    public Cinema toEntity(CinemaDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        Cinema cinema = new Cinema();
+        cinema.setName(dto.getName());
+        cinema.setRows(dto.getRows());
+        cinema.setSeatsPerRow(dto.getSeatsPerRow());
+        return cinema;
+    }
+
+    public void updateEntity(Cinema cinema, CinemaDTO dto) {
+        if (cinema == null || dto == null) {
+            return;
+        }
+        cinema.setName(dto.getName());
+        cinema.setRows(dto.getRows());
+        cinema.setSeatsPerRow(dto.getSeatsPerRow());
+    }
 }

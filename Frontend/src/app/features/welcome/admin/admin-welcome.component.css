@@ -87,6 +87,12 @@ button:disabled {
   transform: translateY(-2px);
 }
 
+.secondary {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--lavender-600, #5b21b6);
+  border: 1px solid rgba(91, 33, 182, 0.25);
+}
+
 .ghost {
   background: transparent;
   color: var(--ink-900);

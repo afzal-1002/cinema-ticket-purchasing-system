@@ -1,6 +1,7 @@
 package com.cinema.ticketsystem.service.implementation;
 
 import com.cinema.ticketsystem.dto.*;
+import com.cinema.ticketsystem.exception.DbUpdateConcurrencyException;
 import com.cinema.ticketsystem.mapper.UserMapper;
 import com.cinema.ticketsystem.model.User;
 import com.cinema.ticketsystem.repository.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,12 +46,14 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(request.getPhoneNumber());
         user.setIsAdmin(false);
         
-        User savedUser = userRepository.save(user);
-        
-        UserDetails userDetails = userDetailsService.loadUserByUsername(savedUser.getEmail());
-        String token = jwtTokenUtil.generateToken(userDetails, savedUser.getId(), savedUser.getIsAdmin());
-        
-        return new AuthResponse(token, userMapper.toDTO(savedUser));
+        try {
+            User savedUser = userRepository.save(user);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(savedUser.getEmail());
+            String token = jwtTokenUtil.generateToken(userDetails, savedUser.getId(), savedUser.getIsAdmin());
+            return new AuthResponse(token, userMapper.toDTO(savedUser));
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The user could not be registered because the record was modified concurrently.", e);
+        }
     }
     
     public AuthResponse login(LoginRequest request) {
@@ -97,11 +101,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         
-        // Set version for optimistic locking
-        if (request.getVersion() != null && !request.getVersion().equals(user.getVersion())) {
-            throw new OptimisticLockException("The user was modified by another user. Please reload and try again.");
-        }
-        
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setPhoneNumber(request.getPhoneNumber());
@@ -109,8 +108,8 @@ public class UserServiceImpl implements UserService {
         try {
             User updatedUser = userRepository.save(user);
             return userMapper.toDTO(updatedUser);
-        } catch (OptimisticLockException e) {
-            throw new RuntimeException("The user was modified by another user. Please reload and try again.");
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The user was modified by another user. Please reload and try again.", e);
         }
     }
     
@@ -122,8 +121,8 @@ public class UserServiceImpl implements UserService {
         
         try {
             userRepository.delete(user);
-        } catch (OptimisticLockException e) {
-            throw new RuntimeException("The user was modified by another user. Please reload and try again.");
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The user was modified by another user. Please reload and try again.", e);
         }
     }
 }

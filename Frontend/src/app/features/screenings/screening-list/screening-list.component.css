@@ -1,0 +1,143 @@
+.screenings-shell {
+  padding: 3rem clamp(1rem, 4vw, 4rem);
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.back-button {
+  border-radius: 999px;
+  padding: 0.55rem 1.4rem;
+  border: 1px solid rgba(226, 232, 240, 0.6);
+  background: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+}
+
+.back-button:hover,
+.back-button:focus-visible {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  font-size: 0.75rem;
+  color: rgba(79, 70, 229, 0.8);
+}
+
+h1 {
+  margin: 0.35rem 0 0;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+}
+
+.lede {
+  margin: 0.35rem 0 0;
+  color: rgba(15, 23, 42, 0.7);
+}
+
+button.primary {
+  border: none;
+  border-radius: 999px;
+  padding: 0.85rem 1.75rem;
+  background: linear-gradient(120deg, #4f46e5, #7c3aed);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.08);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 1.25rem;
+  text-align: left;
+}
+
+th {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(15, 23, 42, 0.65);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+td {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.muted {
+  display: block;
+  font-size: 0.85rem;
+  color: rgba(15, 23, 42, 0.55);
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+button.ghost,
+button.danger {
+  border-radius: 999px;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  background: transparent;
+  cursor: pointer;
+}
+
+button.danger {
+  color: #b91c1c;
+  border-color: rgba(185, 28, 28, 0.3);
+}
+
+.state {
+  text-align: center;
+  color: rgba(15, 23, 42, 0.7);
+  margin: 2rem 0;
+}
+
+.state.error {
+  color: #b91c1c;
+}
+
+@media (max-width: 640px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  th, td {
+    padding: 1rem;
+  }
+}

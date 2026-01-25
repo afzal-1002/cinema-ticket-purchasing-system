@@ -51,4 +51,7 @@ public class SeatHold {
     
     @Column(nullable = false)
     private Boolean isActive = true;
+
+    @Version
+    private Long version;
 }

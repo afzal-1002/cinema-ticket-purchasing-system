@@ -2,6 +2,7 @@ package com.cinema.ticketsystem.repository;
 
 import com.cinema.ticketsystem.model.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -29,4 +30,8 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     
     @Query("SELECT m FROM Movie m JOIN m.screenings s GROUP BY m.id ORDER BY COUNT(s) DESC")
     List<Movie> findMostScreenedMovies();
+
+    @Modifying
+    @Query("update Movie m set m.version = 0 where m.version is null")
+    int initializeMissingVersion();
 }

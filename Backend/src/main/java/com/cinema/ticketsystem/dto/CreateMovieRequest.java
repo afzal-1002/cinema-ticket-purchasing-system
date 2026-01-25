@@ -45,6 +45,8 @@ public class CreateMovieRequest {
     
     @NotNull(message = "Release date is required")
     private LocalDate releaseDate;
+
+    private Boolean isActive;
 }
 
 // Update Movie Request DTO

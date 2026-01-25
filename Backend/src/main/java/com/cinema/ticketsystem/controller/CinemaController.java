@@ -2,7 +2,10 @@ package com.cinema.ticketsystem.controller;
 
 import com.cinema.ticketsystem.dto.CinemaDTO;
 import com.cinema.ticketsystem.service.CinemaService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +25,40 @@ public class CinemaController {
             List<CinemaDTO> cinemas = cinemaService.getAllCinemas();
             return ResponseEntity.ok(cinemas);
         } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<CinemaDTO> createCinema(@Valid @RequestBody CinemaDTO cinemaDTO) {
+        try {
+            CinemaDTO created = cinemaService.createCinema(cinemaDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CinemaDTO> updateCinema(@PathVariable Long id, @Valid @RequestBody CinemaDTO cinemaDTO) {
+        try {
+            CinemaDTO updated = cinemaService.updateCinema(id, cinemaDTO);
+            return ResponseEntity.ok(updated);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCinema(@PathVariable Long id) {
+        try {
+            cinemaService.deleteCinema(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
     }

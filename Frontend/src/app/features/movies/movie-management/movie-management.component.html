@@ -1,0 +1,150 @@
+<section class="movie-admin-shell">
+  <header>
+    <div>
+      <p class="eyebrow">Movies</p>
+      <h1>Manage catalog</h1>
+      <p class="lede">Create, update, or pause movies that can be scheduled for screenings.</p>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="ghost" (click)="goBack()">
+        Back
+      </button>
+      <button type="button" class="ghost" (click)="scrollToMovies()">
+        Browse movies
+      </button>
+      <button type="button" (click)="loadMovies()" [disabled]="isLoading">
+        {{ isLoading ? 'Refreshing…' : 'Refresh list' }}
+      </button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <form [formGroup]="movieForm" (ngSubmit)="saveMovie()" novalidate>
+      <div class="form-grid">
+        <label>
+          <span>Title</span>
+          <input type="text" formControlName="title" placeholder="Movie title" />
+          <small class="error" *ngIf="movieForm.get('title')?.invalid && movieForm.get('title')?.touched">
+            Title is required.
+          </small>
+        </label>
+
+        <label>
+          <span>Genre</span>
+          <input type="text" formControlName="genre" placeholder="Drama" />
+          <small class="error" *ngIf="movieForm.get('genre')?.invalid && movieForm.get('genre')?.touched">
+            Genre is required.
+          </small>
+        </label>
+
+        <label>
+          <span>Duration (minutes)</span>
+          <input type="number" formControlName="durationMinutes" min="1" />
+          <small class="error"
+            *ngIf="movieForm.get('durationMinutes')?.invalid && movieForm.get('durationMinutes')?.touched">
+            Must be at least 1 minute.
+          </small>
+        </label>
+
+        <label>
+          <span>Rating</span>
+          <input type="text" formControlName="rating" placeholder="PG-13" />
+        </label>
+
+        <label>
+          <span>Director</span>
+          <input type="text" formControlName="director" placeholder="Director name" />
+        </label>
+
+        <label>
+          <span>Release date</span>
+          <input type="date" formControlName="releaseDate" />
+          <small class="error"
+            *ngIf="movieForm.get('releaseDate')?.invalid && movieForm.get('releaseDate')?.touched">
+            Release date is required.
+          </small>
+        </label>
+
+        <label class="full">
+          <span>Cast</span>
+          <input type="text" formControlName="cast" placeholder="Lead actors" />
+        </label>
+
+        <label class="full">
+          <span>Description</span>
+          <textarea formControlName="description" rows="4" placeholder="Short synopsis"></textarea>
+        </label>
+
+        <label>
+          <span>Poster URL</span>
+          <input type="url" formControlName="posterUrl" placeholder="https://" />
+        </label>
+
+        <label>
+          <span>Trailer URL</span>
+          <input type="url" formControlName="trailerUrl" placeholder="https://" />
+        </label>
+
+        <label class="toggle">
+          <input type="checkbox" formControlName="isActive" />
+          <span>Movie is active (can appear in screening form)</span>
+        </label>
+      </div>
+
+      <div class="messages">
+        <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+        <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="ghost" (click)="startCreate()" [disabled]="isSaving">
+          Add movie
+        </button>
+        <button class="primary" type="submit" [disabled]="movieForm.invalid || isSaving">
+          <span *ngIf="!isSaving">{{ editingMovie ? 'Update movie' : 'Save movie' }}</span>
+          <span *ngIf="isSaving">Saving…</span>
+        </button>
+        <button type="button" class="danger" (click)="deleteEditingMovie()" [disabled]="!editingMovie || isSaving">
+          Delete movie
+        </button>
+      </div>
+    </form>
+
+    <section class="movie-list" #movieListSection>
+      <p class="state" *ngIf="isLoading">Loading movies…</p>
+      <p class="state error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+      <p class="state" *ngIf="!isLoading && !errorMessage && movies.length === 0">
+        No movies created yet.
+      </p>
+
+      <div class="table" *ngIf="!isLoading && movies.length > 0">
+        <div class="table-head">
+          <span>Title</span>
+          <span>Genre</span>
+          <span>Duration</span>
+          <span>Status</span>
+          <span></span>
+        </div>
+        <article class="row" *ngFor="let movie of movies; trackBy: trackById">
+          <div>
+            <h3>{{ movie.title }}</h3>
+            <p>{{ movie.releaseDate | date: 'mediumDate' }}</p>
+          </div>
+          <div>{{ movie.genre || '—' }}</div>
+          <div>{{ movie.durationMinutes || '—' }} min</div>
+          <div>
+            <span class="badge" [class.badge-inactive]="movie.isActive === false">
+              {{ movie.isActive === false ? 'Inactive' : 'Active' }}
+            </span>
+          </div>
+          <div class="actions">
+            <button type="button" (click)="startEdit(movie)">Update</button>
+            <button type="button" (click)="toggleActive(movie)">
+              {{ movie.isActive === false ? 'Activate' : 'Deactivate' }}
+            </button>
+            <button type="button" class="danger" (click)="deleteMovie(movie)">Delete</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+</section>

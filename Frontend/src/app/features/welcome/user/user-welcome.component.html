@@ -21,8 +21,11 @@
   </ul>
 
   <div class="cta-row">
-    <button class="primary" type="button" disabled>
-      Explore Screenings (Soon)
+    <button class="primary" type="button" (click)="goToCinemas()">
+      Browse Cinemas
+    </button>
+    <button class="secondary" type="button" (click)="goToProfile()">
+      Update profile
     </button>
     <button class="ghost" type="button" (click)="logout()">
       Sign out
