@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CinemaService } from '../../../core/services/cinema.service';
 import { CinemaPayload, CinemaSummary } from '../../../core/models/cinema.model';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-cinema-list',
@@ -22,11 +23,13 @@ export class CinemaListComponent implements OnInit {
   formError: string | null = null;
   isSaving = false;
   deletingId: number | null = null;
+  isAdmin = false;
 
   constructor(
     private cinemaService: CinemaService,
     private location: Location,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authService: AuthService
   ) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(100)]],
@@ -36,6 +39,7 @@ export class CinemaListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin();
     this.fetchCinemas();
   }
 
@@ -75,6 +79,9 @@ export class CinemaListComponent implements OnInit {
   }
 
   startCreate(): void {
+    if (!this.isAdmin) {
+      return;
+    }
     this.editorMode = 'create';
     this.activeCinema = null;
     this.formError = null;
@@ -83,6 +90,9 @@ export class CinemaListComponent implements OnInit {
   }
 
   startEdit(cinema: CinemaSummary): void {
+    if (!this.isAdmin) {
+      return;
+    }
     this.editorMode = 'edit';
     this.activeCinema = cinema;
     this.formError = null;
@@ -95,6 +105,9 @@ export class CinemaListComponent implements OnInit {
   }
 
   cancelEditor(): void {
+    if (!this.isAdmin) {
+      return;
+    }
     this.editorVisible = false;
     this.activeCinema = null;
     this.formError = null;
@@ -105,6 +118,9 @@ export class CinemaListComponent implements OnInit {
   }
 
   submitEditor(): void {
+    if (!this.isAdmin) {
+      return;
+    }
     if (this.form.invalid || this.isSaving) {
       this.form.markAllAsTouched();
       return;
@@ -132,6 +148,9 @@ export class CinemaListComponent implements OnInit {
   }
 
   deleteCinema(cinema: CinemaSummary): void {
+    if (!this.isAdmin) {
+      return;
+    }
     const confirmed = confirm(
       `Delete ${cinema.name}? This removes all screenings and bookings for this cinema.`
     );

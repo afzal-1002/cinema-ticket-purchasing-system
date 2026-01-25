@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class CinemaController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CinemaDTO> createCinema(@Valid @RequestBody CinemaDTO cinemaDTO) {
         try {
             CinemaDTO created = cinemaService.createCinema(cinemaDTO);
@@ -40,6 +42,7 @@ public class CinemaController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CinemaDTO> updateCinema(@PathVariable Long id, @Valid @RequestBody CinemaDTO cinemaDTO) {
         try {
             CinemaDTO updated = cinemaService.updateCinema(id, cinemaDTO);
@@ -52,6 +55,7 @@ public class CinemaController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteCinema(@PathVariable Long id) {
         try {
             cinemaService.deleteCinema(id);

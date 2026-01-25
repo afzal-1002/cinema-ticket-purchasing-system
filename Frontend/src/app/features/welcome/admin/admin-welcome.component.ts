@@ -49,4 +49,8 @@ export class AdminWelcomeComponent {
   goToMovies(): void {
     this.router.navigate(['/movies']);
   }
+
+  goToUsers(): void {
+    this.router.navigate(['/admin/users']);
+  }
 }

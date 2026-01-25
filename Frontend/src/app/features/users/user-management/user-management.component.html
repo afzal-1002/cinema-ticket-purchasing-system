@@ -1,0 +1,113 @@
+<section class="user-shell">
+  <div class="toolbar">
+    <button class="ghost" type="button" (click)="goBack()">Back</button>
+    <div class="toolbar-actions">
+      <button class="ghost" type="button" (click)="refresh()">Refresh</button>
+      <button class="secondary" type="button" (click)="goHome()">Admin home</button>
+    </div>
+  </div>
+
+  <header>
+    <p class="eyebrow">Team directory</p>
+    <h1>Keep every account on track</h1>
+    <p class="lede">
+      Only administrators can edit or remove users. Use this view to keep contact info accurate
+      and deactivate accounts when needed.
+    </p>
+  </header>
+
+  <div class="alert error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <div class="alert success" *ngIf="successMessage">{{ successMessage }}</div>
+
+  <div class="state" *ngIf="isLoading">
+    <p>Fetching user directory…</p>
+  </div>
+
+  <div class="state" *ngIf="!isLoading && !errorMessage && users.length === 0">
+    <p>No registered users yet.</p>
+  </div>
+
+  <div class="grid" *ngIf="!isLoading && !errorMessage && users.length > 0">
+    <article class="user-card" *ngFor="let user of users; trackBy: trackById">
+      <div class="user-card__top">
+        <div>
+          <h3>{{ user.firstName || 'Unnamed' }} {{ user.lastName || '' }}</h3>
+          <p class="email">{{ user.email }}</p>
+        </div>
+        <span class="role" [class.role--admin]="user.isAdmin">{{ roleBadge(user) }}</span>
+      </div>
+      <div class="user-card__meta">
+        <div>
+          <span class="label">Phone</span>
+          <p>{{ user.phoneNumber || 'missing' }}</p>
+        </div>
+        <div>
+          <span class="label">Version</span>
+          <p>#{{ user.version ?? '—' }}</p>
+        </div>
+        <div>
+          <span class="label">Status</span>
+          <p>{{ user.isAdmin ? 'Administrator' : 'Standard' }}</p>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button type="button" class="pill pill--subtle" (click)="startEdit(user)">
+          Edit
+        </button>
+        <button type="button"
+                class="pill pill--danger"
+                (click)="deleteUser(user)"
+                [disabled]="!canDelete(user) || deletingId === user.id">
+          <span *ngIf="deletingId === user.id">Removing…</span>
+          <span *ngIf="deletingId !== user.id">Delete</span>
+        </button>
+      </div>
+    </article>
+  </div>
+
+  <section class="editor-panel">
+    <div>
+      <p class="eyebrow">Edit details</p>
+      <h2>{{ selectedUser ? 'Update user profile' : 'Select a user to edit' }}</h2>
+      <p class="lede">Changes apply immediately and will be visible to the user on their next login.</p>
+      <p class="note" *ngIf="!selectedUser">Choose a user card above to load their information.</p>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <label>
+        <span>First name</span>
+        <input type="text" formControlName="firstName" [disabled]="!selectedUser" />
+        <small class="error" *ngIf="form.get('firstName')?.invalid && form.get('firstName')?.touched">
+          First name is required.
+        </small>
+      </label>
+
+      <label>
+        <span>Last name</span>
+        <input type="text" formControlName="lastName" [disabled]="!selectedUser" />
+        <small class="error" *ngIf="form.get('lastName')?.invalid && form.get('lastName')?.touched">
+          Last name is required.
+        </small>
+      </label>
+
+      <label>
+        <span>Phone number</span>
+        <input type="text" formControlName="phoneNumber" [disabled]="!selectedUser" />
+        <small class="error" *ngIf="form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched">
+          Provide a phone number between 6 and 20 characters.
+        </small>
+      </label>
+
+      <p class="error" *ngIf="formMessage">{{ formMessage }}</p>
+
+      <div class="editor-actions">
+        <button class="pill pill--primary" type="submit" [disabled]="!selectedUser || form.invalid || isSaving">
+          <span *ngIf="!isSaving">Save changes</span>
+          <span *ngIf="isSaving">Saving…</span>
+        </button>
+        <button class="pill pill--subtle" type="button" (click)="cancelEdit()" [disabled]="!selectedUser">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </section>
+</section>

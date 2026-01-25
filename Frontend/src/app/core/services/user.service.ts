@@ -16,8 +16,20 @@ export class UserService {
     });
   }
 
+  getUsers(): Observable<UserProfile[]> {
+    return this.http.get<UserProfile[]>(this.baseUrl, {
+      headers: this.buildHeaders()
+    });
+  }
+
   updateUser(payload: UpdateUserPayload): Observable<UserProfile> {
     return this.http.put<UserProfile>(`${this.baseUrl}/${payload.id}`, payload, {
+      headers: this.buildHeaders()
+    });
+  }
+
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, {
       headers: this.buildHeaders()
     });
   }

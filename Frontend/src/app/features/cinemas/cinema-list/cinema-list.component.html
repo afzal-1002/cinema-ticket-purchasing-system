@@ -1,7 +1,7 @@
 <section class="cinema-shell">
   <div class="page-actions">
     <button type="button" class="back-button" (click)="goBack()">Back</button>
-    <div class="admin-actions">
+    <div class="admin-actions" *ngIf="isAdmin">
       <button type="button" class="pill pill--subtle" *ngIf="editorVisible" (click)="cancelEditor()">
         Cancel
       </button>
@@ -10,7 +10,7 @@
       </button>
     </div>
   </div>
-  <p class="alert" *ngIf="formError && !editorVisible">{{ formError }}</p>
+  <p class="alert" *ngIf="isAdmin && formError && !editorVisible">{{ formError }}</p>
   <header>
     <p class="eyebrow">Cinemas</p>
     <h1>Choose your auditorium</h1>
@@ -19,7 +19,7 @@
     </p>
   </header>
 
-  <section class="editor-panel" *ngIf="editorVisible">
+  <section class="editor-panel" *ngIf="isAdmin && editorVisible">
     <div>
       <p class="eyebrow">{{ editorMode === 'create' ? 'New cinema' : 'Update cinema' }}</p>
       <h2>{{ editorMode === 'create' ? 'Add a fresh auditorium' : 'Refine auditorium details' }}</h2>
@@ -94,17 +94,23 @@
           </span>
         </div>
       </div>
-      <div class="card-actions">
-        <button type="button" class="pill pill--subtle" (click)="startEdit(cinema)">
-          Update
-        </button>
-        <button type="button"
-                class="pill pill--danger"
-                (click)="deleteCinema(cinema)"
-                [disabled]="deletingId === cinema.id">
-          <span *ngIf="deletingId === cinema.id">Removing…</span>
-          <span *ngIf="deletingId !== cinema.id">Delete</span>
-        </button>
+      <div class="card-actions" *ngIf="isAdmin">
+        <div class="card-actions__info">
+          <p class="admin-note">Manage auditorium</p>
+          <span class="admin-sub">Updates refresh the seating map instantly.</span>
+        </div>
+        <div class="card-buttons">
+          <button type="button" class="pill pill--subtle" (click)="startEdit(cinema)">
+            Update
+          </button>
+          <button type="button"
+                  class="pill pill--danger"
+                  (click)="deleteCinema(cinema)"
+                  [disabled]="deletingId === cinema.id">
+            <span *ngIf="deletingId === cinema.id">Removing…</span>
+            <span *ngIf="deletingId !== cinema.id">Delete</span>
+          </button>
+        </div>
       </div>
     </article>
   </div>

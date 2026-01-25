@@ -13,6 +13,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import { UserScreeningsComponent } from './features/browse/user-screenings/user-screenings.component';
 import { SeatSelectionComponent } from './features/seat-selection/seat-selection.component';
+import { UserManagementComponent } from './features/users/user-management/user-management.component';
 
 export const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
@@ -26,6 +27,7 @@ export const routes: Routes = [
 	{ path: 'browse/screenings', component: UserScreeningsComponent, canActivate: [authGuard] },
 	{ path: 'browse/screenings/:id/seats', component: SeatSelectionComponent, canActivate: [authGuard] },
 	{ path: 'admin/welcome', component: AdminWelcomeComponent, canActivate: [authGuard] },
+	{ path: 'admin/users', component: UserManagementComponent, canActivate: [authGuard, adminGuard] },
 	{ path: 'user/welcome', component: UserWelcomeComponent, canActivate: [authGuard] },
 	{ path: '', redirectTo: 'login', pathMatch: 'full' },
 	{ path: '**', redirectTo: 'login' }
