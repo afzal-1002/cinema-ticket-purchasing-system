@@ -113,7 +113,12 @@ export class UserManagementComponent implements OnInit {
       },
       error: (err) => {
         this.isSaving = false;
-        this.formMessage = err?.error?.message ?? 'Failed to update user. Please try again.';
+        if (err?.status === 409) {
+          this.formMessage = 'Another admin already saved changes to this user. Reloading latest data…';
+          this.loadUsers();
+        } else {
+          this.formMessage = err?.error?.message ?? 'Failed to update user. Please try again.';
+        }
       }
     });
   }

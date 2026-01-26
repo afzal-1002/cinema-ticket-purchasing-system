@@ -21,7 +21,30 @@
 
   <section class="editor-panel" *ngIf="isAdmin && editorVisible">
     <div>
-      <p class="eyebrow">{{ editorMode === 'create' ? 'New cinema' : 'Update cinema' }}</p>
+    <p class="alert" *ngIf="isAdmin && formError && !editorVisible">{{ formError }}</p>
+
+    <section class="showtimes" *ngIf="!showtimesLoading && !showtimesError && showtimes.length > 0">
+      <div>
+        <p class="eyebrow">Live availability</p>
+        <h2 class="showtimes-title">Auditoriums & films</h2>
+        <p class="lede">Monitor the next screenings and their remaining seats before picking a hall.</p>
+      </div>
+      <div class="showtimes-feed">
+        <article class="show-card" *ngFor="let show of showtimes">
+          <div class="show-card__top">
+            <span class="show-card__cinema">{{ show.cinemaName }}</span>
+            <span class="show-card__time">{{ show.startDateTime | date: 'MMM d · h:mm a' }}</span>
+          </div>
+          <p class="show-card__movie">{{ show.movieTitle }}</p>
+          <p class="show-card__seats">{{ show.availableSeats }} seats left</p>
+        </article>
+      </div>
+    </section>
+
+    <div class="state" *ngIf="showtimesLoading">
+      <p>Loading live auditorium status…</p>
+    </div>
+    <p class="alert" *ngIf="showtimesError">{{ showtimesError }}</p>
       <h2>{{ editorMode === 'create' ? 'Add a fresh auditorium' : 'Refine auditorium details' }}</h2>
       <p class="lede">
         Define capacity and a memorable name. Updates propagate to screenings immediately.

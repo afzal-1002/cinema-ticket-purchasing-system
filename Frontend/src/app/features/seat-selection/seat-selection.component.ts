@@ -123,6 +123,13 @@ export class SeatSelectionComponent implements OnInit, OnDestroy {
 
   toggleSeat(seat: SeatSummary): void {
     if (seat.status !== 'AVAILABLE') {
+      if (seat.status === 'HELD') {
+        this.errorMessage = 'This seat is currently on hold. Please choose a different seat.';
+      } else if (seat.status === 'RESERVED' || seat.status === 'MY_RESERVED') {
+        this.errorMessage = 'This seat is already booked and cannot be selected.';
+      } else {
+        this.errorMessage = 'This seat is unavailable right now.';
+      }
       return;
     }
 
@@ -163,7 +170,12 @@ export class SeatSelectionComponent implements OnInit, OnDestroy {
           this.isHolding = false;
         },
         error: (error) => {
-          this.errorMessage = error.error?.message || 'Unable to hold seats.';
+          if (error.status === 409) {
+            this.errorMessage = 'One or more seats are already held or booked. Please pick different seats.';
+            this.loadAll();
+          } else {
+            this.errorMessage = error.error?.message || 'Unable to hold seats.';
+          }
           this.isHolding = false;
         }
       });
@@ -187,7 +199,7 @@ export class SeatSelectionComponent implements OnInit, OnDestroy {
         const holdIds = this.activeHold?.holdIds ?? [];
         this.activeHold = null;
         this.stopCountdown();
-        this.message = 'Reservation confirmed!';
+        this.message = 'Seats booked under your profile!';
         this.isConfirming = false;
         if (holdIds.length) {
           this.seatSelectionService.releaseHolds(holdIds).subscribe({
@@ -198,7 +210,12 @@ export class SeatSelectionComponent implements OnInit, OnDestroy {
         this.loadAll();
       },
       error: (error) => {
-        this.errorMessage = error.error?.message || 'Reservation failed.';
+        if (error.status === 409) {
+          this.errorMessage = 'Another guest booked or held these seats moments ago. Please select new seats.';
+          this.loadAll();
+        } else {
+          this.errorMessage = error.error?.message || 'Reservation failed.';
+        }
         this.isConfirming = false;
       }
     });

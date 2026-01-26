@@ -14,6 +14,9 @@ import { adminGuard } from './core/guards/admin.guard';
 import { UserScreeningsComponent } from './features/browse/user-screenings/user-screenings.component';
 import { SeatSelectionComponent } from './features/seat-selection/seat-selection.component';
 import { UserManagementComponent } from './features/users/user-management/user-management.component';
+import { CinemaBrowserComponent } from './features/browse/cinema-browser/cinema-browser.component';
+import { MovieBrowserComponent } from './features/browse/movie-browser/movie-browser.component';
+import { MyBookingsComponent } from './features/reservations/my-bookings/my-bookings.component';
 
 export const routes: Routes = [
 	{ path: 'login', component: LoginComponent },
@@ -24,8 +27,11 @@ export const routes: Routes = [
 	{ path: 'screenings/new', component: ScreeningCreateComponent, canActivate: [authGuard, adminGuard] },
 	{ path: 'screenings/:id', component: ScreeningDetailComponent, canActivate: [authGuard] },
 	{ path: 'movies', component: MovieManagementComponent, canActivate: [authGuard, adminGuard] },
+	{ path: 'browse/cinemas', component: CinemaBrowserComponent, canActivate: [authGuard] },
+	{ path: 'browse/movies', component: MovieBrowserComponent, canActivate: [authGuard] },
 	{ path: 'browse/screenings', component: UserScreeningsComponent, canActivate: [authGuard] },
 	{ path: 'browse/screenings/:id/seats', component: SeatSelectionComponent, canActivate: [authGuard] },
+	{ path: 'user/bookings', component: MyBookingsComponent, canActivate: [authGuard] },
 	{ path: 'admin/welcome', component: AdminWelcomeComponent, canActivate: [authGuard] },
 	{ path: 'admin/users', component: UserManagementComponent, canActivate: [authGuard, adminGuard] },
 	{ path: 'user/welcome', component: UserWelcomeComponent, canActivate: [authGuard] },

@@ -1,0 +1,83 @@
+<section class="browser-shell">
+  <header>
+    <div>
+      <p class="eyebrow">Browse cinemas</p>
+      <h1>Pick the perfect auditorium</h1>
+      <p class="lede">
+        Compare halls, preview the next movie in each room, then jump straight into seat selection.
+      </p>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="ghost" (click)="goToAllScreenings()">All screenings</button>
+      <button type="button" class="primary" (click)="loadAvailability()" [disabled]="isLoading">
+        {{ isLoading ? 'Refreshing…' : 'Refresh' }}
+      </button>
+    </div>
+  </header>
+
+  <p class="timestamp" *ngIf="lastUpdated">
+    Availability updated {{ lastUpdated | date: 'shortTime' }}
+  </p>
+
+  <p class="state" *ngIf="isLoading">Loading cinema availability…</p>
+  <p class="state error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+  <p class="state" *ngIf="!isLoading && !errorMessage && availabilities.length === 0">
+    No cinemas have been configured yet. Check back soon!
+  </p>
+
+  <div class="grid" *ngIf="!isLoading && !errorMessage && availabilities.length > 0">
+    <article class="cinema-card" *ngFor="let entry of availabilities; trackBy: trackByCinemaIndex">
+      <div class="card-top">
+        <div>
+          <h2>{{ entry.cinema.name }}</h2>
+          <p class="meta">{{ entry.cinema.rows }} rows · {{ entry.cinema.seatsPerRow }} seats/row</p>
+        </div>
+        <span class="badge">{{ entry.totalSeats }} seats</span>
+      </div>
+
+      <section *ngIf="entry.nextScreening as next; else noSchedule" class="upcoming">
+        <p class="eyebrow">Upcoming movie</p>
+        <h3>{{ next.movieTitle }}</h3>
+        <p class="showtime">
+          {{ next.startDateTime | date: 'fullDate' }} · {{ next.startDateTime | date: 'shortTime' }}
+        </p>
+
+        <div class="metrics">
+          <div class="metric">
+            <p class="metric-label">Total seats</p>
+            <p class="metric-value">{{ entry.totalSeats }}</p>
+            <span class="metric-sub">fixed for this hall</span>
+          </div>
+          <div class="metric">
+            <p class="metric-label">Seats left for this movie</p>
+            <p class="metric-value">{{ next.availableSeats }}</p>
+            <span class="metric-sub">{{ next.heldSeats }} held · {{ next.reservedSeats }} booked</span>
+          </div>
+        </div>
+
+        <div class="availability-bar" *ngIf="entry.totalSeats > 0">
+          <div
+            class="availability-bar__fill"
+            [style.width.%]="(next.availableSeats / entry.totalSeats) * 100"
+          ></div>
+        </div>
+      </section>
+
+      <ng-template #noSchedule>
+        <section class="upcoming upcoming--empty">
+          <p class="eyebrow">No show scheduled</p>
+          <p class="showtime">This auditorium has free capacity. View the full schedule to pick a movie.</p>
+        </section>
+      </ng-template>
+
+      <button
+        type="button"
+        class="primary"
+        (click)="bookTickets(entry)"
+        [class.outline]="!entry.nextScreening"
+      >
+        {{ entry.nextScreening ? 'Book Ticket' : 'See screening list' }}
+      </button>
+    </article>
+  </div>
+</section>

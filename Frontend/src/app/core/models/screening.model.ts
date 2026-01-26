@@ -21,6 +21,10 @@ export interface ScreeningSummary {
   ticketPrice: number;
   rows: number;
   seatsPerRow: number;
+  totalSeats: number;
+  reservedSeats: number;
+  heldSeats: number;
+  availableSeats: number;
 }
 
 export interface ScreeningDetail extends ScreeningSummary {

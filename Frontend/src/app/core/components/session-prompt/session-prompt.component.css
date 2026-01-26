@@ -1,0 +1,62 @@
+.session-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1.5rem;
+}
+
+.session-card {
+  max-width: 420px;
+  width: 100%;
+  background: #fff;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 30px 70px rgba(15, 23, 42, 0.25);
+  text-align: center;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  font-size: 0.75rem;
+  color: #d97706;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  margin: 0 0 0.75rem;
+  color: #0f172a;
+}
+
+p {
+  margin: 0 auto 1.5rem;
+  color: rgba(15, 23, 42, 0.75);
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pill {
+  border-radius: 999px;
+  padding: 0.65rem 1.6rem;
+  border: 1px solid rgba(15, 23, 42, 0.25);
+  background: transparent;
+  color: #0f172a;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pill--primary {
+  background: linear-gradient(120deg, #f97316, #ea580c);
+  border: none;
+  color: #fff;
+  box-shadow: 0 15px 35px rgba(249, 115, 22, 0.25);
+}

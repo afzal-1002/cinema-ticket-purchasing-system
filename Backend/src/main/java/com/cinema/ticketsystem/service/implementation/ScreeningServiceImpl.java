@@ -31,6 +31,7 @@ public class ScreeningServiceImpl implements ScreeningService {
     private final ScreeningMapper screeningMapper;
     private final ScreeningDetailMapper screeningDetailMapper;
     
+    @Transactional(readOnly = true)
     public List<ScreeningDTO> getAllScreenings() {
         return screeningRepository.findAllByOrderByStartDateTimeAsc().stream()
                 .map(screeningMapper::toDTO)

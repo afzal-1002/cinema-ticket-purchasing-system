@@ -1,0 +1,95 @@
+<section class="movie-browser-shell">
+  <header>
+    <div>
+      <p class="eyebrow">Now Showing</p>
+      <h1>Choose by movie</h1>
+      <p class="lede">Preview each title with real-time seat counts before you jump into booking.</p>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="ghost" (click)="goToScreenings()">Browse Screenings</button>
+      <button type="button" class="ghost" (click)="goHome()">Home</button>
+      <button type="button" class="primary" (click)="loadMovies()" [disabled]="isLoading">Refresh</button>
+    </div>
+  </header>
+
+  <section class="toolbar" *ngIf="!isLoading && !errorMessage">
+    <div class="search">
+      <label for="movieSearch">Search</label>
+      <input
+        id="movieSearch"
+        type="search"
+        placeholder="Movie title or genre"
+        [(ngModel)]="searchTerm"
+      />
+    </div>
+    <div class="stats">
+      <p>
+        Movies listed: <strong>{{ filteredAvailabilities().length }}</strong>
+      </p>
+      <p>
+        Seats left overall: <strong>{{ getTotalAvailableSeats() }}</strong>
+      </p>
+    </div>
+  </section>
+
+  <p class="state" *ngIf="isLoading">Loading movies…</p>
+  <p class="state error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
+  <p class="state" *ngIf="!isLoading && !errorMessage && filteredAvailabilities().length === 0">
+    No active movies with open seats right now.
+  </p>
+
+  <div class="grid" *ngIf="!isLoading && !errorMessage && filteredAvailabilities().length > 0">
+    <article class="card" *ngFor="let entry of filteredAvailabilities()">
+      <div class="card-header">
+        <div class="title-block">
+          <h2>{{ entry.movie.title }}</h2>
+          <p class="meta">
+            <span *ngIf="entry.movie.genre">{{ entry.movie.genre }}</span>
+            <span *ngIf="entry.movie.genre && entry.movie.durationMinutes">•</span>
+            <span *ngIf="entry.movie.durationMinutes">{{ entry.movie.durationMinutes }} min</span>
+          </p>
+        </div>
+        <div class="badge" *ngIf="entry.nextScreening">Next at {{ entry.nextScreening.startDateTime | date: 'shortTime' }}</div>
+      </div>
+
+      <div class="counts">
+        <div>
+          <p class="count-label">Seats left</p>
+          <p class="count-value available">{{ entry.totalAvailableSeats }}</p>
+        </div>
+        <div>
+          <p class="count-label">Reserved</p>
+          <p class="count-value reserved">{{ entry.totalReservedSeats }}</p>
+        </div>
+        <div>
+          <p class="count-label">Held</p>
+          <p class="count-value held">{{ entry.totalHeldSeats }}</p>
+        </div>
+      </div>
+
+      <div class="next-screening" *ngIf="entry.nextScreening; else noSession">
+        <h3>Next session</h3>
+        <p>
+          {{ entry.nextScreening.cinemaName }} ·
+          {{ entry.nextScreening.startDateTime | date: 'fullDate' }}
+          at {{ entry.nextScreening.startDateTime | date: 'shortTime' }}
+        </p>
+      </div>
+      <ng-template #noSession>
+        <p class="next-screening muted">No upcoming sessions scheduled.</p>
+      </ng-template>
+
+      <div class="actions">
+        <button
+          type="button"
+          class="primary"
+          (click)="bookFromMovie(entry)"
+          [disabled]="!entry.nextScreening"
+        >
+          Book this movie
+        </button>
+        <button type="button" class="ghost" (click)="goToScreenings()">View all sessions</button>
+      </div>
+    </article>
+  </div>
+</section>

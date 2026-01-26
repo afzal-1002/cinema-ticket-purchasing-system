@@ -39,6 +39,14 @@ export class UserWelcomeComponent {
   }
 
   goToCinemas(): void {
-    this.router.navigate(['/cinemas']);
+    this.router.navigate(['/browse/cinemas']);
+  }
+
+  goToMovies(): void {
+    this.router.navigate(['/browse/movies']);
+  }
+
+  goToBookings(): void {
+    this.router.navigate(['/user/bookings']);
   }
 }

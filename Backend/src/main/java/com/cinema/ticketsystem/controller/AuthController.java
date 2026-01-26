@@ -39,6 +39,20 @@ public class AuthController {
             return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
         }
     }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshToken(@RequestHeader(value = "Authorization", required = false) String authHeader) {
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(401).body(new ErrorResponse("Missing authorization header"));
+            }
+            String token = authHeader.substring(7);
+            AuthResponse response = userService.refreshToken(token);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body(new ErrorResponse(e.getMessage()));
+        }
+    }
    
     @Getter @Setter
     private static class ErrorResponse {

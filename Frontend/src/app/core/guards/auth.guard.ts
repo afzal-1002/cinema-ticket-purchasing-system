@@ -5,9 +5,7 @@ import { AuthService } from '../services/auth.service';
 export const authGuard: CanActivateFn = (_route, state): boolean | UrlTree => {
   const authService = inject(AuthService);
   const router = inject(Router);
-  const token = authService.getToken();
-
-  if (token) {
+  if (authService.hasValidToken()) {
     return true;
   }
 

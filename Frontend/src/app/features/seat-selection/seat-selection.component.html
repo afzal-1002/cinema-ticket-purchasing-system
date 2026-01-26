@@ -39,7 +39,7 @@
   <section class="seat-legend">
     <div><span class="seat available"></span> Available</div>
     <div><span class="seat held"></span> Held</div>
-    <div><span class="seat reserved"></span> Reserved</div>
+    <div><span class="seat reserved"></span> Booked</div>
     <div><span class="seat my_reserved"></span> My Reservations</div>
     <div><span class="seat selected"></span> Selected</div>
   </section>
@@ -71,7 +71,7 @@
     </div>
     <div class="hold-buttons">
       <button (click)="confirmReservation()" [disabled]="isConfirming">
-        {{ isConfirming ? 'Confirming…' : 'Confirm Reservation' }}
+        {{ isConfirming ? 'Booking…' : 'Book Seats' }}
       </button>
       <button class="ghost" (click)="releaseHold()">Release Hold</button>
     </div>

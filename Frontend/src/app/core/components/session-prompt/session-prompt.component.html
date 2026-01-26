@@ -1,0 +1,16 @@
+<ng-container *ngIf="state$ | async as state">
+  <div class="session-overlay" *ngIf="state.visible">
+    <article class="session-card">
+      <p class="eyebrow">Session expiring</p>
+      <h2>Need a little more time?</h2>
+      <p>
+        Your secure session is about to end. Select <strong>Continue</strong> to refresh your token and
+        keep working. Otherwise, you'll be signed out automatically in {{ state.countdown }}s.
+      </p>
+      <div class="actions">
+        <button type="button" class="pill pill--primary" (click)="keepAlive()">Continue session</button>
+        <button type="button" class="pill" (click)="endSession()">Sign out</button>
+      </div>
+    </article>
+  </div>
+</ng-container>

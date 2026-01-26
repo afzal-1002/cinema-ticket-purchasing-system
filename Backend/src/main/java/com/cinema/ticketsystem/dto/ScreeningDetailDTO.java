@@ -21,5 +21,9 @@ public class ScreeningDetailDTO {
     private BigDecimal ticketPrice;
     private Integer rows;
     private Integer seatsPerRow;
+    private Integer totalSeats;
+    private Integer reservedSeats;
+    private Integer heldSeats;
+    private Integer availableSeats;
     private List<SeatDTO> seats;
 }

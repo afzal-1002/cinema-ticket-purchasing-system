@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { RegisterPayload } from '../../../core/models/auth.model';
+import { SessionTimeoutService } from '../../../core/services/session-timeout.service';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +21,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private sessionTimeoutService: SessionTimeoutService
   ) {
     this.registerForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -43,6 +45,7 @@ export class RegisterComponent {
     this.authService.register(payload).subscribe({
       next: (response) => {
         this.authService.storeSession(response);
+        this.sessionTimeoutService.onSessionStart();
         const destination = response.user?.isAdmin ? '/admin/welcome' : '/user/welcome';
         this.isSubmitting = false;
         this.router.navigate([destination]);

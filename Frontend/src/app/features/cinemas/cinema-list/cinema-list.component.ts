@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CinemaService } from '../../../core/services/cinema.service';
 import { CinemaPayload, CinemaSummary } from '../../../core/models/cinema.model';
 import { AuthService } from '../../../core/services/auth.service';
+import { ScreeningService } from '../../../core/services/screening.service';
+import { ScreeningSummary } from '../../../core/models/screening.model';
 
 @Component({
   selector: 'app-cinema-list',
@@ -24,12 +26,16 @@ export class CinemaListComponent implements OnInit {
   isSaving = false;
   deletingId: number | null = null;
   isAdmin = false;
+  showtimesLoading = false;
+  showtimesError: string | null = null;
+  showtimes: ScreeningSummary[] = [];
 
   constructor(
     private cinemaService: CinemaService,
     private location: Location,
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private screeningService: ScreeningService
   ) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(100)]],
@@ -41,6 +47,22 @@ export class CinemaListComponent implements OnInit {
   ngOnInit(): void {
     this.isAdmin = this.authService.isAdmin();
     this.fetchCinemas();
+    this.loadShowtimes();
+  }
+
+  loadShowtimes(): void {
+    this.showtimesLoading = true;
+    this.showtimesError = null;
+    this.screeningService.getScreenings().subscribe({
+      next: (screenings) => {
+        this.showtimes = screenings.slice(0, 6);
+        this.showtimesLoading = false;
+      },
+      error: () => {
+        this.showtimesError = 'Unable to load live seat availability.';
+        this.showtimesLoading = false;
+      }
+    });
   }
 
   fetchCinemas(): void {

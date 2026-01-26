@@ -5,7 +5,7 @@ export interface UserProfile extends UserSummary {
   firstName: string;
   lastName: string;
   id: number;
-  version?: number;
+  version: number;
 }
 
 export interface UpdateUserPayload {
@@ -13,5 +13,5 @@ export interface UpdateUserPayload {
   firstName: string;
   lastName: string;
   phoneNumber: string;
-  version?: number;
+  version: number;
 }

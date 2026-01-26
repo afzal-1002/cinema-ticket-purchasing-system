@@ -1,12 +1,11 @@
 :root {
-  --shell-bg: radial-gradient(circle at 20% 20%, rgba(14, 165, 233, 0.25), transparent 45%),
-    radial-gradient(circle at 80% 0%, rgba(99, 102, 241, 0.25), transparent 40%),
-    #020617;
-  --card-bg: rgba(15, 23, 42, 0.65);
-  --border-muted: rgba(148, 163, 184, 0.2);
-  --lavender: #a78bfa;
-  --ink: #f1f5f9;
-  --muted: rgba(226, 232, 240, 0.75);
+  --shell-bg: #fdf7ef;
+  --card-bg: rgba(255, 255, 255, 0.92);
+  --border-muted: rgba(15, 23, 42, 0.08);
+  --lavender: #8b5cf6;
+  --ink: #1f2933;
+  --muted: rgba(31, 41, 55, 0.6);
+  --peach: #f4e2c9;
 }
 
 .cinema-shell {
@@ -26,7 +25,7 @@
 }
 
 .back-button {
-  border: 1px solid rgba(226, 232, 240, 0.4);
+  border: 1px solid rgba(15, 23, 42, 0.15);
   background: transparent;
   color: var(--ink);
   border-radius: 999px;
@@ -35,13 +34,13 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: background 200ms ease, color 200ms ease;
+  transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
 }
 
 .back-button:hover,
 .back-button:focus-visible {
-  background: rgba(226, 232, 240, 0.1);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(15, 23, 42, 0.4);
 }
 
 .admin-actions {
@@ -58,38 +57,41 @@
   letter-spacing: 0.03em;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+  transition: background 200ms ease, color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
 }
 
 .pill--primary {
-  background: linear-gradient(135deg, #6366f1, #a855f7);
-  color: #fff;
+  background: linear-gradient(135deg, #f6c96f, #f08ba7);
+  color: #422006;
+  border-color: rgba(239, 68, 68, 0.25);
+  box-shadow: 0 12px 30px rgba(240, 139, 167, 0.3);
 }
 
 .pill--primary:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .pill--subtle {
-  background: rgba(79, 70, 229, 0.18);
-  border-color: rgba(99, 102, 241, 0.55);
-  color: #eef2ff;
+  background: rgba(248, 250, 252, 0.9);
+  border-color: rgba(148, 163, 184, 0.4);
+  color: var(--ink);
 }
 
 .pill--danger {
   background: rgba(239, 68, 68, 0.12);
   border-color: rgba(239, 68, 68, 0.4);
-  color: #fecaca;
+  color: #b91c1c;
 }
 
 .alert {
   margin: 0 0 1rem;
   padding: 0.85rem 1.25rem;
   border-radius: 0.85rem;
-  background: rgba(239, 68, 68, 0.16);
-  border: 1px solid rgba(239, 68, 68, 0.45);
-  color: #fecaca;
+  background: rgba(254, 226, 226, 0.7);
+  border: 1px solid rgba(248, 113, 113, 0.5);
+  color: #991b1b;
 }
 
 header {
@@ -131,6 +133,55 @@ header h1 {
   background: var(--lavender);
   color: #fff;
   cursor: pointer;
+}
+
+.showtimes {
+  border-radius: 1.5rem;
+  padding: 1.75rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  margin-bottom: 2rem;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+}
+
+.showtimes-title {
+  margin: 0.2rem 0 0.5rem;
+}
+
+.showtimes-feed {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.show-card {
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.show-card__top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.show-card__movie {
+  margin: 0;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.show-card__seats {
+  margin: 0;
+  color: #065f46;
+  font-weight: 600;
 }
 
 .editor-panel {

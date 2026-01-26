@@ -1,19 +1,21 @@
-<div class="login-container">
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <h2>User Login</h2>
-    <div>
-      <label for="email">Email</label>
-      <input id="email" formControlName="email" type="email" required />
-    </div>
-    <div>
-      <label for="password">Password</label>
-      <input id="password" formControlName="password" type="password" required />
-    </div>
-    <div *ngIf="loginError" class="error">{{ loginError }}</div>
-    <button type="submit" [disabled]="isLoading">
-      {{ isLoading ? 'Logging in...' : 'Login' }}
-    </button>
+<div class="login-wrapper">
+  <div class="login-container">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <h2>User Login</h2>
+      <div>
+        <label for="email">Email</label>
+        <input id="email" formControlName="email" type="email" required />
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input id="password" formControlName="password" type="password" required />
+      </div>
+      <div *ngIf="loginError" class="error">{{ loginError }}</div>
+      <button type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Logging in...' : 'Login' }}
+      </button>
 
-    <p class="switch-link">Need an account? <a routerLink="/register">Register now</a></p>
-  </form>
+      <p class="switch-link">Need an account? <a routerLink="/register">Register now</a></p>
+    </form>
+  </div>
 </div>

@@ -8,6 +8,7 @@ import java.util.List;
 public interface UserService {
     AuthResponse register(RegisterRequest request);
     AuthResponse login(LoginRequest request);
+    AuthResponse refreshToken(String token);
     List<UserDTO> getAllUsers();
     UserDTO getUserById(Long id);
     User getUserEntityById(Long id);

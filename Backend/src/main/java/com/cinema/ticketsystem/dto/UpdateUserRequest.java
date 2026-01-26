@@ -1,6 +1,7 @@
 package com.cinema.ticketsystem.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,6 @@ public class UpdateUserRequest {
     @NotBlank(message = "Phone number is required")
     private String phoneNumber;
     
+    @NotNull(message = "Version is required for concurrency control")
     private Long version; // For optimistic locking
 }

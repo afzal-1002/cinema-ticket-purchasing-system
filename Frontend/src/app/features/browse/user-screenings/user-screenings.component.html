@@ -7,9 +7,58 @@
     </div>
     <div class="header-actions">
       <button type="button" class="ghost" (click)="goBack()">Back</button>
+      <button type="button" class="ghost" (click)="goHome()">Home</button>
+      <button type="button" class="ghost" (click)="goToMovies()">Browse Movies</button>
       <button type="button" class="primary" (click)="fetchScreenings()">Refresh</button>
     </div>
   </header>
+
+  <section class="filters" *ngIf="!isLoading && !errorMessage">
+    <div class="filter-group">
+      <label>Search</label>
+      <input
+        type="search"
+        placeholder="Movie or cinema name"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onFilterChange()"
+      />
+    </div>
+
+    <div class="filter-group">
+      <label>Cinema</label>
+      <select [(ngModel)]="cinemaFilter" (change)="onFilterChange()">
+        <option value="all">All cinemas</option>
+        <option *ngFor="let cinema of cinemaOptions" [value]="cinema">{{ cinema }}</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Seats left ≥</label>
+      <input
+        type="number"
+        min="0"
+        [value]="minAvailable"
+        (input)="minAvailable = $any($event.target).valueAsNumber || 0; onFilterChange()"
+      />
+    </div>
+
+    <div class="filter-group">
+      <label>Sort by</label>
+      <select [(ngModel)]="sortMode" (change)="onFilterChange()">
+        <option value="soonest">Soonest start</option>
+        <option value="latest">Latest start</option>
+        <option value="seats-desc">Seats left (high → low)</option>
+        <option value="price-asc">Ticket price (low → high)</option>
+        <option value="price-desc">Ticket price (high → low)</option>
+      </select>
+    </div>
+
+    <button type="button" class="ghost" (click)="clearFilters()">Reset</button>
+  </section>
+
+  <p class="state" *ngIf="!isLoading && !errorMessage && screenings.length">
+    Showing {{ screenings.length }} of {{ allScreenings.length }} screenings
+  </p>
 
   <p class="state" *ngIf="isLoading">Loading screenings…</p>
   <p class="state error" *ngIf="!isLoading && errorMessage">{{ errorMessage }}</p>
@@ -26,7 +75,7 @@
         <span>{{ screening.startDateTime | date: 'fullDate' }} at {{ screening.startDateTime | date: 'shortTime' }}</span>
       </p>
       <p class="seats">{{ screening.rows }} rows × {{ screening.seatsPerRow }} seats</p>
-      <button type="button" class="primary" (click)="selectSeats(screening)">Select seats</button>
+      <button type="button" class="primary" (click)="selectSeats(screening)">Book Ticket</button>
     </article>
   </div>
 </section>

@@ -1,0 +1,59 @@
+<section class="bookings-shell">
+  <header>
+    <div>
+      <p class="eyebrow">My bookings</p>
+      <h1>Manage your reservations</h1>
+      <p class="lede">Every ticket you hold in one place. Cancel immediately when plans change.</p>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="ghost" (click)="goHome()">Home</button>
+      <button type="button" class="ghost" (click)="goToMovies()">Browse movies</button>
+      <button type="button" class="primary" (click)="loadReservations()" [disabled]="isLoading">
+        {{ isLoading ? 'Refreshing…' : 'Refresh' }}
+      </button>
+    </div>
+  </header>
+
+  <div class="messages">
+    <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+
+  <p class="state" *ngIf="isLoading">Loading your bookings…</p>
+  <p class="state" *ngIf="!isLoading && !errorMessage && reservations.length === 0">
+    You have no bookings yet. Start by exploring movies or screenings.
+  </p>
+
+  <div class="booking-grid" *ngIf="!isLoading && !errorMessage && reservations.length">
+    <article class="booking-card" *ngFor="let reservation of reservations">
+      <div class="card-header">
+        <div>
+          <p class="eyebrow">{{ reservation.cinemaName }}</p>
+          <h2>{{ reservation.movieTitle }}</h2>
+        </div>
+        <span class="status" [class.status-dimmed]="reservation.status && reservation.status !== 'CONFIRMED'">
+          {{ reservation.status || 'CONFIRMED' }}
+        </span>
+      </div>
+
+      <p class="datetime">
+        {{ reservation.startDateTime | date: 'fullDate' }} ·
+        {{ reservation.startDateTime | date: 'shortTime' }}
+      </p>
+
+      <p class="seat">Seat R{{ reservation.row }} · S{{ reservation.seat }}</p>
+      <p class="created">Booked on {{ reservation.createdAt | date: 'medium' }}</p>
+
+      <div class="card-actions">
+        <button
+          type="button"
+          class="danger"
+          (click)="cancelReservation(reservation)"
+          [disabled]="isCancelling(reservation.id)"
+        >
+          {{ isCancelling(reservation.id) ? 'Cancelling…' : 'Cancel booking' }}
+        </button>
+      </div>
+    </article>
+  </div>
+</section>

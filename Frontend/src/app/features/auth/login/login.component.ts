@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { LoginPayload } from '../../../core/models/auth.model';
+import { SessionTimeoutService } from '../../../core/services/session-timeout.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private sessionTimeoutService: SessionTimeoutService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -40,6 +42,7 @@ export class LoginComponent {
     this.authService.login(payload).subscribe({
       next: (response) => {
         this.authService.storeSession(response);
+        this.sessionTimeoutService.onSessionStart();
         const destination = response.user?.isAdmin ? '/admin/welcome' : '/user/welcome';
         this.isLoading = false;
         this.router.navigate([destination]);

@@ -69,6 +69,25 @@ public class UserServiceImpl implements UserService {
         
         return new AuthResponse(token, userMapper.toDTO(user));
     }
+
+    public AuthResponse refreshToken(String token) {
+        if (token == null || token.isBlank()) {
+            throw new RuntimeException("Missing token");
+        }
+
+        if (jwtTokenUtil.isTokenExpired(token)) {
+            throw new RuntimeException("Session expired. Please log in again.");
+        }
+
+        String email = jwtTokenUtil.extractUsername(token);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        String newToken = jwtTokenUtil.generateToken(userDetails, user.getId(), user.getIsAdmin());
+
+        return new AuthResponse(newToken, userMapper.toDTO(user));
+    }
     
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream()
@@ -100,6 +119,14 @@ public class UserServiceImpl implements UserService {
         @SuppressWarnings("null")
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (request.getVersion() == null) {
+            throw new DbUpdateConcurrencyException("Missing version for concurrency check.");
+        }
+
+        if (!request.getVersion().equals(user.getVersion())) {
+            throw new DbUpdateConcurrencyException("The user was modified by another user. Please reload and try again.");
+        }
         
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());

@@ -99,6 +99,19 @@ button.back {
   border-radius: 0.2rem;
 }
 
+.seat-legend .seat.available {
+  background: #e0f2fe;
+}
+
+.seat-legend .seat.held {
+  background: #fde68a;
+}
+
+.seat-legend .seat.my_reserved {
+  background: #c7d2fe;
+  color: #3730a3;
+}
+
 .seat-stage {
   text-align: center;
   padding: 0.5rem;
@@ -141,9 +154,10 @@ button.back {
   color: #92400e;
 }
 
-.seat-row button.seat.reserved {
-  background: #fecdd3;
-  color: #9f1239;
+.seat-row button.seat.reserved,
+.seat-legend .seat.reserved {
+  background: #e2e8f0;
+  color: #4b5563;
 }
 
 .seat-row button.seat.my_reserved {

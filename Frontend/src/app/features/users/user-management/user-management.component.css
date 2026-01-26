@@ -1,9 +1,9 @@
 :root {
-  --night: #050e1f;
-  --panel: rgba(15, 23, 42, 0.7);
-  --border: rgba(148, 163, 184, 0.3);
-  --ink: #f8fafc;
-  --muted: rgba(226, 232, 240, 0.8);
+  --night: #fff5ea;
+  --panel: rgba(255, 255, 255, 0.95);
+  --border: rgba(15, 23, 42, 0.08);
+  --ink: #0f172a;
+  --muted: rgba(15, 23, 42, 0.6);
   --lavender: #a855f7;
   --sky: #38bdf8;
 }
@@ -11,9 +11,9 @@
 .user-shell {
   min-height: 100vh;
   padding: 2.5rem clamp(1rem, 4vw, 3.5rem) 4rem;
-  background: radial-gradient(circle at top left, rgba(88, 28, 135, 0.35), transparent 45%),
-    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.25), transparent 40%),
-    #020617;
+  background: radial-gradient(circle at top left, rgba(250, 224, 170, 0.5), transparent 45%),
+    radial-gradient(circle at bottom right, rgba(254, 215, 170, 0.45), transparent 40%),
+    #fff9f2;
   color: var(--ink);
   display: flex;
   flex-direction: column;
@@ -42,7 +42,7 @@ header {
   text-transform: uppercase;
   letter-spacing: 0.4em;
   font-size: 0.75rem;
-  color: rgba(168, 85, 247, 0.85);
+  color: #d97706;
 }
 
 h1 {
@@ -71,25 +71,26 @@ button {
 }
 
 .secondary {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(168, 85, 247, 0.5);
-  color: var(--ink);
+  background: rgba(249, 115, 22, 0.12);
+  border-color: rgba(234, 88, 12, 0.35);
+  color: #b45309;
 }
 
 .alert {
   padding: 0.85rem 1.2rem;
   border-radius: 0.85rem;
   border: 1px solid transparent;
+  color: var(--ink);
 }
 
 .alert.error {
-  border-color: rgba(248, 113, 113, 0.6);
-  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.35);
+  background: rgba(254, 226, 226, 0.95);
 }
 
 .alert.success {
-  border-color: rgba(59, 226, 157, 0.6);
-  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.35);
+  background: rgba(220, 252, 231, 0.95);
 }
 
 .state {
@@ -111,7 +112,8 @@ button {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  box-shadow: 0 20px 50px rgba(5, 10, 35, 0.45);
+  box-shadow: 0 25px 45px rgba(15, 23, 42, 0.12);
+  color: var(--ink);
 }
 
 .user-card__top {
@@ -134,16 +136,16 @@ button {
   align-self: flex-start;
   padding: 0.25rem 0.85rem;
   border-radius: 999px;
-  background: rgba(99, 102, 241, 0.22);
-  color: #c7d2fe;
+  background: rgba(59, 130, 246, 0.15);
+  color: #1d4ed8;
   font-size: 0.8rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .role.role--admin {
-  background: rgba(168, 85, 247, 0.28);
-  color: #f5d0fe;
+  background: rgba(249, 115, 22, 0.18);
+  color: #9a3412;
 }
 
 .user-card__meta {
@@ -156,7 +158,7 @@ button {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.7rem;
-  color: rgba(226, 232, 240, 0.65);
+  color: rgba(15, 23, 42, 0.45);
 }
 
 .user-card__meta p {
@@ -172,14 +174,14 @@ button {
   border-radius: 999px;
   padding: 0.6rem 1.4rem;
   font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(15, 23, 42, 0.03);
   color: var(--ink);
 }
 
 .pill--subtle {
-  border-color: rgba(99, 102, 241, 0.5);
-  color: #e0e7ff;
+  border-color: rgba(59, 130, 246, 0.35);
+  color: #1d4ed8;
 }
 
 .pill--primary {
@@ -189,8 +191,8 @@ button {
 }
 
 .pill--danger {
-  border-color: rgba(248, 113, 113, 0.6);
-  color: #fecaca;
+  border-color: rgba(248, 113, 113, 0.4);
+  color: #b91c1c;
 }
 
 .pill:disabled {
@@ -203,10 +205,11 @@ button {
   padding: 2rem clamp(1rem, 4vw, 2.5rem);
   border-radius: 1.75rem;
   border: 1px solid var(--border);
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(255, 255, 255, 0.9);
   display: grid;
   gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.12);
 }
 
 .editor-panel form {
@@ -224,8 +227,8 @@ input {
   margin-top: 0.35rem;
   padding: 0.75rem 1rem;
   border-radius: 1rem;
-  border: 1px solid rgba(226, 232, 240, 0.2);
-  background: rgba(2, 6, 23, 0.5);
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  background: #fff;
   color: var(--ink);
 }
 
@@ -235,12 +238,12 @@ input:disabled {
 
 input:focus {
   outline: none;
-  border-color: rgba(168, 85, 247, 0.7);
-  box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.4);
+  border-color: rgba(168, 85, 247, 0.5);
+  box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.35);
 }
 
 .error {
-  color: #fecaca;
+  color: #b91c1c;
 }
 
 .note {
