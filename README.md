@@ -16,6 +16,7 @@ A full-stack web application that allows users to:
 ## 🏗️ Architecture
 
 ### Backend: Spring Boot (Java)
+- Location: `cinema-ticket-java/`
 - RESTful API
 - JWT Authentication
 - Spring Security
@@ -23,7 +24,14 @@ A full-stack web application that allows users to:
 - H2 Database (development)
 - MySQL/SQL Server support (production)
 
+### Backend: ASP.NET Core (C#)
+- Location: `cinema-ticket-C#/`
+- Mirrors the Spring feature set for parity
+- JWT-based authentication with ASP.NET Identity services
+- AutoMapper profiles, MySQL EF Core integration
+
 ### Frontend: Angular
+- Location: `cinema-ticket-ui/`
 - Responsive UI with Bootstrap
 - Component-based architecture
 - HTTP client for API integration
@@ -71,25 +79,18 @@ A full-stack web application that allows users to:
 
 ```
 cinema-ticket-purchasing-system/
-├── Backend/                          # Spring Boot Backend
+├── cinema-ticket-java/              # Spring Boot backend
+│   ├── src/main/java/com/cinema/ticketsystem/...
+│   ├── src/main/resources/
+│   └── pom.xml
+├── cinema-ticket-C#/                # ASP.NET Core backend (JWT, EF Core)
+│   ├── Controllers/
+│   ├── Program.cs
+│   └── CinemaTicket.sln
+├── cinema-ticket-ui/                # Angular frontend
 │   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/com/cinema/ticketsystem/
-│   │   │   │   ├── config/          # Security & Data Init
-│   │   │   │   ├── controller/      # REST API Controllers
-│   │   │   │   ├── dto/             # Data Transfer Objects
-│   │   │   │   ├── model/           # JPA Entities
-│   │   │   │   ├── repository/      # Data Access
-│   │   │   │   ├── security/        # JWT & Auth
-│   │   │   │   ├── service/         # Business Logic
-│   │   │   │   └── CinemaTicketSystemApplication.java
-│   │   │   └── resources/
-│   │   │       ├── application.properties
-│   │   │       └── application-prod.properties
-│   │   └── test/
-│   ├── pom.xml                      # Maven configuration
-│   └── README.md
-├── Frontend/                        # Angular Frontend (To be added)
+│   ├── angular.json
+│   └── package.json
 └── README.md                        # This file
 ```
 
@@ -139,9 +140,9 @@ cinema-ticket-purchasing-system/
 
 ### Backend Setup
 
-1. **Navigate to Backend directory:**
+1. **Navigate to the Spring Boot backend directory:**
 ```bash
-cd Backend
+cd cinema-ticket-java
 ```
 
 2. **Build the project:**
@@ -167,9 +168,9 @@ mvn spring-boot:run
 
 ### Frontend Setup (When Angular is added)
 
-1. **Navigate to Frontend directory:**
+1. **Navigate to the Angular frontend directory:**
 ```bash
-cd Frontend
+cd cinema-ticket-ui
 ```
 
 2. **Install dependencies:**

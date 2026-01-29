@@ -1,0 +1,45 @@
+{
+  "Files": [
+    {
+      "Id": "/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Task-3-4/cinema-ticket-purchasing-system/cinema-ticket-C#/obj/Debug/net8.0/scopedcss/projectbundle/CinemaTicket.bundle.scp.css",
+      "PackagePath": "staticwebassets/CinemaTicket.bundle.scp.css"
+    },
+    {
+      "Id": "/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Task-3-4/cinema-ticket-purchasing-system/cinema-ticket-C#/wwwroot/favicon.ico",
+      "PackagePath": "staticwebassets/favicon.ico"
+    },
+    {
+      "Id": "/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Task-3-4/cinema-ticket-purchasing-system/cinema-ticket-C#/wwwroot/index.html",
+      "PackagePath": "staticwebassets/index.html"
+    },
+    {
+      "Id": "/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Task-3-4/cinema-ticket-purchasing-system/cinema-ticket-C#/wwwroot/main-PHTSG4NO.js",
+      "PackagePath": "staticwebassets/main-PHTSG4NO.js"
+    },
+    {
+      "Id": "/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Task-3-4/cinema-ticket-purchasing-system/cinema-ticket-C#/wwwroot/polyfills-B6TNHZQ6.js",
+      "PackagePath": "staticwebassets/polyfills-B6TNHZQ6.js"
+    },
+    {
+      "Id": "/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Task-3-4/cinema-ticket-purchasing-system/cinema-ticket-C#/wwwroot/styles-NKF7HLLL.css",
+      "PackagePath": "staticwebassets/styles-NKF7HLLL.css"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.CinemaTicket.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.CinemaTicket.props",
+      "PackagePath": "build\\CinemaTicket.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.CinemaTicket.props",
+      "PackagePath": "buildMultiTargeting\\CinemaTicket.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.CinemaTicket.props",
+      "PackagePath": "buildTransitive\\CinemaTicket.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

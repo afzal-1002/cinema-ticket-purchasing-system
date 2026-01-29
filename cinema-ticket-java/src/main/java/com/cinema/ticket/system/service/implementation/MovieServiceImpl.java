@@ -1,0 +1,293 @@
+package com.cinema.ticket.system.service.implementation;
+
+import com.cinema.ticket.system.dto.CreateMovieRequest;
+import com.cinema.ticket.system.dto.CreateReviewRequest;
+import com.cinema.ticket.system.dto.MovieDTO;
+import com.cinema.ticket.system.dto.ReviewDTO;
+import com.cinema.ticket.system.exception.DbUpdateConcurrencyException;
+import com.cinema.ticket.system.mapper.MovieMapper;
+import com.cinema.ticket.system.mapper.ReviewMapper;
+import com.cinema.ticket.system.model.Movie;
+import com.cinema.ticket.system.model.Review;
+import com.cinema.ticket.system.model.User;
+import com.cinema.ticket.system.repository.MovieRepository;
+import com.cinema.ticket.system.repository.ReviewRepository;
+import com.cinema.ticket.system.repository.UserRepository;
+import com.cinema.ticket.system.service.MovieService;
+import jakarta.persistence.OptimisticLockException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class MovieServiceImpl implements MovieService {
+    
+    private final MovieRepository movieRepository;
+    private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
+    private final MovieMapper movieMapper;
+    private final ReviewMapper reviewMapper;
+    
+    @Transactional(readOnly = true)
+    public List<MovieDTO> getAllActiveMovies() {
+        return movieRepository.findByIsActiveTrue().stream()
+                .map(movieMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+    
+    @Transactional(readOnly = true)
+    public List<MovieDTO> getAllMovies() {
+        return movieRepository.findAll().stream()
+                .map(movieMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+    
+    @Transactional(readOnly = true)
+    public MovieDTO getMovieById(Long id) {
+        if (id == null) {
+            throw new RuntimeException("Movie ID cannot be null");
+        }
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
+        return movieMapper.toDTO(movie);
+    }
+    
+    @Transactional(readOnly = true)
+    public List<MovieDTO> getMoviesByGenre(String genre) {
+        return movieRepository.findByGenreAndIsActiveTrue(genre).stream()
+                .map(movieMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+    
+    @Transactional(readOnly = true)
+    public List<MovieDTO> searchMoviesByTitle(String title) {
+        return movieRepository.findByTitleContainingIgnoreCaseAndIsActiveTrue(title).stream()
+                .map(movieMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+    
+    @Transactional(readOnly = true)
+    public List<MovieDTO> getNewReleases() {
+        LocalDate thirtyDaysAgo = LocalDate.now().minusDays(30);
+        return movieRepository.findByReleaseDateAfterAndIsActiveTrue(thirtyDaysAgo).stream()
+                .map(movieMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+    
+    @Transactional(readOnly = true)
+    public List<MovieDTO> getTopRatedMovies() {
+        return movieRepository.findTopRatedMovies().stream()
+                .limit(10)
+                .map(movieMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+    
+    @Transactional(readOnly = true)
+    public List<String> getAllGenres() {
+        return movieRepository.findDistinctGenres();
+    }
+    
+    @Transactional
+    public MovieDTO createMovie(CreateMovieRequest request) {
+        Movie movie = new Movie();
+        movie.setTitle(request.getTitle());
+        movie.setDescription(request.getDescription());
+        movie.setDurationMinutes(request.getDurationMinutes());
+        movie.setGenre(request.getGenre());
+        movie.setRating(request.getRating());
+        movie.setDirector(request.getDirector());
+        movie.setCast(request.getCast());
+        movie.setPosterUrl(request.getPosterUrl());
+        movie.setTrailerUrl(request.getTrailerUrl());
+        movie.setReleaseDate(request.getReleaseDate());
+        movie.setIsActive(request.getIsActive() == null ? Boolean.TRUE : request.getIsActive());
+        movie.setAverageRating(BigDecimal.ZERO);
+        movie.setTotalReviews(0);
+        
+        try {
+            Movie savedMovie = movieRepository.save(movie);
+            return movieMapper.toDTO(savedMovie);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The movie could not be saved due to a concurrent update.", e);
+        }
+    }
+    
+    @Transactional
+    public MovieDTO updateMovie(Long id, CreateMovieRequest request) {
+        if (id == null) {
+            throw new RuntimeException("Movie ID cannot be null");
+        }
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
+        
+        if (request.getTitle() != null) movie.setTitle(request.getTitle());
+        if (request.getDescription() != null) movie.setDescription(request.getDescription());
+        if (request.getDurationMinutes() != null) movie.setDurationMinutes(request.getDurationMinutes());
+        if (request.getGenre() != null) movie.setGenre(request.getGenre());
+        if (request.getRating() != null) movie.setRating(request.getRating());
+        if (request.getDirector() != null) movie.setDirector(request.getDirector());
+        if (request.getCast() != null) movie.setCast(request.getCast());
+        if (request.getPosterUrl() != null) movie.setPosterUrl(request.getPosterUrl());
+        if (request.getTrailerUrl() != null) movie.setTrailerUrl(request.getTrailerUrl());
+        if (request.getReleaseDate() != null) movie.setReleaseDate(request.getReleaseDate());
+        if (request.getIsActive() != null) movie.setIsActive(request.getIsActive());
+
+
+        try {
+            Movie updatedMovie = movieRepository.save(movie);
+            return movieMapper.toDTO(updatedMovie);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The movie was modified by another user. Please reload and try again.", e);
+        }
+    }
+    
+    @Transactional
+    public void deactivateMovie(Long id) {
+        if (id == null) {
+            throw new RuntimeException("Movie ID cannot be null");
+        }
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
+        movie.setIsActive(false);
+        try {
+            movieRepository.save(movie);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The movie was modified by another user. Please reload and try again.", e);
+        }
+    }
+    
+    @Transactional
+    public void deleteMovie(Long id) {
+        Movie movie = movieRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
+        try {
+            movieRepository.delete(movie);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The movie was modified by another user. Please reload and try again.", e);
+        }
+    }
+    
+    // Review Methods
+    @Transactional
+    public ReviewDTO createReview(Long userId, CreateReviewRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        
+        Movie movie = movieRepository.findById(request.getMovieId())
+                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + request.getMovieId()));
+        
+        if (reviewRepository.existsByUserIdAndMovieId(userId, request.getMovieId())) {
+            throw new RuntimeException("You have already reviewed this movie");
+        }
+        
+        Review review = new Review();
+        review.setUser(user);
+        review.setMovie(movie);
+        review.setRating(request.getRating());
+        review.setComment(request.getComment());
+        
+        Review savedReview;
+        try {
+            savedReview = reviewRepository.save(review);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The review could not be saved because it was modified concurrently.", e);
+        }
+        
+        // Update movie average rating
+        updateMovieAverageRating(movie.getId());
+        
+        return reviewMapper.toDTO(savedReview);
+    }
+    
+    @Transactional
+    public ReviewDTO updateReview(Long userId, Long reviewId, CreateReviewRequest request) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review not found with id: " + reviewId));
+        
+        if (!review.getUser().getId().equals(userId)) {
+            throw new RuntimeException("You can only update your own reviews");
+        }
+        
+        review.setRating(request.getRating());
+        review.setComment(request.getComment());
+        
+        Review updatedReview;
+        try {
+            updatedReview = reviewRepository.save(review);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The review was modified by another user. Please reload and try again.", e);
+        }
+        
+        // Update movie average rating
+        updateMovieAverageRating(review.getMovie().getId());
+        
+        return reviewMapper.toDTO(updatedReview);
+    }
+    
+    @Transactional
+    public void deleteReview(Long userId, Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review not found with id: " + reviewId));
+        
+        if (!review.getUser().getId().equals(userId)) {
+            throw new RuntimeException("You can only delete your own reviews");
+        }
+        
+        Long movieId = review.getMovie().getId();
+        try {
+            reviewRepository.delete(review);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("The review was modified by another user. Please reload and try again.", e);
+        }
+        
+        // Update movie average rating
+        updateMovieAverageRating(movieId);
+    }
+    
+    @Transactional(readOnly = true)
+    public List<ReviewDTO> getMovieReviews(Long movieId) {
+        return reviewRepository.findByMovieId(movieId).stream()
+                .map(reviewMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+    
+    @Transactional(readOnly = true)
+    public List<ReviewDTO> getUserReviews(Long userId) {
+        return reviewRepository.findByUserId(userId).stream()
+                .map(reviewMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+    
+    private void updateMovieAverageRating(Long movieId) {
+        List<Review> reviews = reviewRepository.findByMovieId(movieId);
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new RuntimeException("Movie not found"));
+        
+        if (reviews.isEmpty()) {
+            movie.setAverageRating(BigDecimal.ZERO);
+            movie.setTotalReviews(0);
+        } else {
+            double average = reviews.stream()
+                    .mapToInt(Review::getRating)
+                    .average()
+                    .orElse(0.0);
+            
+            movie.setAverageRating(BigDecimal.valueOf(average).setScale(1, RoundingMode.HALF_UP));
+            movie.setTotalReviews(reviews.size());
+        }
+        
+        try {
+            movieRepository.save(movie);
+        } catch (OptimisticLockException | ObjectOptimisticLockingFailureException e) {
+            throw new DbUpdateConcurrencyException("Movie ratings were updated by another process. Please retry.", e);
+        }
+    }
+}

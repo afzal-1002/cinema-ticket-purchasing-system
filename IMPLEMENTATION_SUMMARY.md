@@ -131,12 +131,12 @@ All Java dependencies have been validated using `validate_cves_for_java`:
 ## 🗂️ Project Structure
 
 ```
-Backend/
+cinema-ticket-java/
 ├── pom.xml (updated with Spring Mail dependency)
 ├── FEATURES.md (comprehensive documentation)
 ├── src/main/
 │   ├── java/com/cinema/ticketsystem/
-│   │   ├── CinemaTicketSystemApplication.java (updated)
+│   │   ├── CinemaTicketSystem.java (updated)
 │   │   ├── model/
 │   │   │   ├── Movie.java ✨
 │   │   │   ├── Review.java ✨
@@ -185,7 +185,7 @@ Backend/
 
 ### To Run the Application:
 ```bash
-cd Backend
+cd cinema-ticket-java
 mvn clean install
 mvn spring-boot:run
 ```
