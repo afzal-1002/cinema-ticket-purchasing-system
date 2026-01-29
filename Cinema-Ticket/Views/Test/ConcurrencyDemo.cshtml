@@ -1,0 +1,180 @@
+@{
+    ViewData["Title"] = "Timestamp Concurrency Control Demo";
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="container mt-5">
+        <div class="alert alert-danger">
+            @ViewBag.Error
+        </div>
+        <p>Run this command to start the database:</p>
+        <pre class="bg-light p-3"><code>docker-compose up -d</code></pre>
+    </div>
+    return;
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">🔒 Timestamp Concurrency Control Demo</h1>
+            
+            <div class="alert alert-info">
+                <h4>📋 Test Scenario (Using Real Database User)</h4>
+                <p>This demo uses the existing user <strong>'jane'</strong> from your database (init.sql):</p>
+                <ul>
+                    <li><strong>User ID:</strong> @ViewBag.UserId</li>
+                    <li><strong>Original Email:</strong> @ViewBag.OriginalEmail</li>
+                </ul>
+                <p>Scenario:</p>
+                <ol>
+                    <li><strong>User1</strong> and <strong>User2</strong> both load jane's record (same RowVersion)</li>
+                    <li><strong>User1</strong> updates email → timestamp changes</li>
+                    <li><strong>User2</strong> tries to save with OLD timestamp → <strong>REJECTED</strong></li>
+                    <li>Original email is restored after test</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- User 1 (Success) -->
+        <div class="col-md-6">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white">
+                    <h5>👤 User 1 - First Update (SUCCESS)</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Original Timestamp:</strong></p>
+                    <code class="d-block mb-3 p-2 bg-light">@ViewBag.User1OriginalTimestamp</code>
+                    
+                    <p><strong>Action:</strong> Changed email to <code>@ViewBag.User1NewEmail</code></p>
+                    
+                    <p><strong>New Timestamp (after save):</strong></p>
+                    <code class="d-block mb-3 p-2 bg-light">@ViewBag.User1NewTimestamp</code>
+                    
+                    <div class="alert alert-success mb-0">
+                        <strong>@ViewBag.User1Success</strong>
+                        <br/>✔️ Timestamp changed → Update committed to database
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User 2 (Conflict) -->
+        <div class="col-md-6">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h5>👤 User 2 - Second Update (CONFLICT)</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Original Timestamp (same as User1):</strong></p>
+                    <code class="d-block mb-3 p-2 bg-light">@ViewBag.User2OriginalTimestamp</code>
+                    
+                    <p><strong>Action:</strong> Tried to change email to <code>jane_user2_attempt@("@")email.com</code></p>
+                    
+                    <div class="alert alert-danger mb-0">
+                        <strong>Result:</strong><br/>
+                        @ViewBag.User2Result
+                        <br/><br/>
+                        ❌ Database rejected the update because timestamp had changed
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final Database State -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5>💾 Final Database State</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Value</th>
+                                <th>Explanation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Final Email</strong></td>
+                                <td><code>@ViewBag.FinalEmail</code></td>
+                                <td>Restored to original: @ViewBag.OriginalEmail</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Final Timestamp</strong></td>
+                                <td><code>@ViewBag.FinalTimestamp</code></td>
+                                <td>Multiple updates changed timestamp</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="alert alert-success mt-3">
+                        <h5>✅ Concurrency Protection Working!</h5>
+                        <p class="mb-0">
+                            The <code>[Timestamp]</code> attribute prevented User2's update.
+                            The same protection is now active in <strong>UserController</strong> for all user edits!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Try Real Edit Link -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5>🧪 Try Concurrency Protection in Real Edit Form</h5>
+                </div>
+                <div class="card-body">
+                    <p>To test concurrency in the actual user edit form:</p>
+                    <ol>
+                        <li>Open <a href="/User/Edit/@ViewBag.UserId" target="_blank">Edit User (jane)</a> in <strong>two browser tabs</strong></li>
+                        <li>Change the email in <strong>Tab 1</strong> and click Save</li>
+                        <li>Change the email in <strong>Tab 2</strong> and click Save</li>
+                        <li><strong>Tab 2</strong> will show concurrency conflict error! ✅</li>
+                    </ol>
+                    <a href="/User/Edit/@ViewBag.UserId" class="btn btn-primary" target="_blank">
+                        ✏️ Edit User (jane) - Try Concurrency Test
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row mt-4 mb-5">
+        <div class="col-12 text-center">
+            <a href="@Url.Action("ConcurrencyDemo")" class="btn btn-primary btn-lg">
+                🔄 Run Demo Again
+            </a>
+            <a href="@Url.Action("Index", "User")" class="btn btn-success btn-lg">
+                👥 View All Users
+            </a>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-secondary btn-lg">
+                🏠 Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    code {
+        color: #d63384;
+        background-color: #f8f9fa;
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+    pre code {
+        color: #212529;
+        display: block;
+        overflow-x: auto;
+    }
+</style>

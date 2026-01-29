@@ -1,0 +1,37 @@
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+      SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+      FROM information_schema.tables
+      WHERE table_type = 'BASE TABLE' AND table_schema = 'cinema_db'
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+      SELECT EXISTS (
+          SELECT 1
+          FROM `Cinemas` AS `c`)
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://127.0.0.1:5000
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /home/mafzal/Desktop/SSD2/M.Sc Computer Science/Semester 4/EGUI/Lab/CinemaTicket
+warn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
+      Failed to determine the https port for redirect.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+      SELECT `c`.`Id`, `c`.`Name`, `c`.`RoomNumber`, `c`.`SeatsPerRow`, `c`.`TotalRows`
+      FROM `Cinemas` AS `c`
+      ORDER BY `c`.`Name`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+      SELECT `c`.`Id`, `c`.`Name`, `c`.`RoomNumber`, `c`.`SeatsPerRow`, `c`.`TotalRows`
+      FROM `Cinemas` AS `c`
+      ORDER BY `c`.`Name`
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='60']
+      SELECT `c`.`Id`, `c`.`Name`, `c`.`RoomNumber`, `c`.`SeatsPerRow`, `c`.`TotalRows`
+      FROM `Cinemas` AS `c`
+      ORDER BY `c`.`Name`
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...

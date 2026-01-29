@@ -1,0 +1,186 @@
+@* filepath: /home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Profile/MyBookings.cshtml *@
+@model IEnumerable<CinemaTicket.Models.Entities.Reservation>
+
+@{
+    ViewData["Title"] = "My Bookings";
+    var activeBookings = ViewBag.ActiveBookings as List<CinemaTicket.Models.Entities.Reservation> ?? new List<CinemaTicket.Models.Entities.Reservation>();
+    var pastBookings = ViewBag.PastBookings as List<CinemaTicket.Models.Entities.Reservation> ?? new List<CinemaTicket.Models.Entities.Reservation>();
+}
+
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2 class="mb-0">
+                <i class="bi bi-person-badge"></i> My Bookings
+            </h2>
+            <p class="text-muted">View and manage your cinema ticket reservations</p>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Active Bookings -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="bi bi-ticket-perforated"></i> Active Bookings (@activeBookings.Count)
+            </h5>
+        </div>
+        <div class="card-body">
+            @if (activeBookings.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Movie</th>
+                                <th>Cinema</th>
+                                <th>Screening Time</th>
+                                <th>Seat</th>
+                                <th>Booked On</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var booking in activeBookings)
+                            {
+                                <tr>
+                                    <td><strong>@(booking.Screening?.MovieTitle ?? "N/A")</strong></td>
+                                    <td>@(booking.Screening?.Cinema?.Name ?? "N/A") (@(booking.Screening?.Cinema?.RoomNumber ?? "N/A"))</td>
+                                    <td>
+                                        <i class="bi bi-calendar-event"></i>
+                                        @(booking.Screening?.StartTime.ToString("MMM dd, yyyy h:mm tt") ?? "N/A")
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info">Seat @booking.SeatNumber</span>
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">
+                                            @booking.ReservationDate.ToString("MMM dd, yyyy")
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <form asp-action="CancelBooking" asp-route-id="@booking.Id" method="post" 
+                                              onsubmit="return confirm('⚠️ Are you sure you want to cancel this booking?');" 
+                                              class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-sm btn-danger" 
+                                                    title="Cancel Booking">
+                                                <i class="bi bi-x-circle"></i> Cancel
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info mb-0">
+                    <i class="bi bi-info-circle"></i> You have no active bookings.
+                    <a asp-controller="Screenings" asp-action="Index" class="alert-link">
+                        Browse screenings
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Past Bookings -->
+    <div class="card">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">
+                <i class="bi bi-clock-history"></i> Past Bookings (@pastBookings.Count)
+            </h5>
+        </div>
+        <div class="card-body">
+            @if (pastBookings.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Movie</th>
+                                <th>Cinema</th>
+                                <th>Screening Time</th>
+                                <th>Seat</th>
+                                <th>Booked On</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var booking in pastBookings.Take(10))
+                            {
+                                <tr class="text-muted">
+                                    <td>@(booking.Screening?.MovieTitle ?? "N/A")</td>
+                                    <td>@(booking.Screening?.Cinema?.Name ?? "N/A") (@(booking.Screening?.Cinema?.RoomNumber ?? "N/A"))</td>
+                                    <td>
+                                        @(booking.Screening?.StartTime.ToString("MMM dd, yyyy h:mm tt") ?? "N/A")
+                                    </td>
+                                    <td>Seat @booking.SeatNumber</td>
+                                    <td>
+                                        <small>@booking.ReservationDate.ToString("MMM dd, yyyy")</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">Completed</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                
+                @if (pastBookings.Count > 10)
+                {
+                    <p class="text-muted mb-0">
+                        <small>Showing 10 of @pastBookings.Count past bookings</small>
+                    </p>
+                }
+            }
+            else
+            {
+                <div class="alert alert-info mb-0">
+                    <i class="bi bi-info-circle"></i> You have no past bookings.
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-controller="Screenings" asp-action="Index" class="btn btn-primary">
+            <i class="bi bi-film"></i> Browse Screenings
+        </a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-house"></i> Home
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-dismiss success alerts after 5 seconds
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert-success');
+            alerts.forEach(function(alert) {
+                var bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    </script>
+}

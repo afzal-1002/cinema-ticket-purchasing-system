@@ -1,0 +1,121 @@
+@model CinemaTicket.Models.Entities.Cinema
+
+@{
+    ViewData["Title"] = "Cinema Details";
+    var isAdmin = ViewBag.IsAdmin as bool? ?? false;
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-building"></i> Cinema Hall Details
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-5">Cinema Name:</dt>
+                                <dd class="col-sm-7"><strong>@Model.Name</strong></dd>
+
+                                <dt class="col-sm-5">Room Number:</dt>
+                                <dd class="col-sm-7">@Model.RoomNumber</dd>
+
+                                <dt class="col-sm-5">Total Rows:</dt>
+                                <dd class="col-sm-7">@Model.TotalRows</dd>
+
+                                <dt class="col-sm-5">Seats Per Row:</dt>
+                                <dd class="col-sm-7">@Model.SeatsPerRow</dd>
+
+                                <dt class="col-sm-5">Total Capacity:</dt>
+                                <dd class="col-sm-7">
+                                    <span class="badge bg-primary fs-6">
+                                        @(Model.TotalRows * Model.SeatsPerRow) seats
+                                    </span>
+                                </dd>
+                            </dl>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Upcoming Screenings</h5>
+                            @if (Model.Screenings != null && Model.Screenings.Any())
+                            {
+                                <div class="list-group">
+                                    @foreach (var screening in Model.Screenings.OrderBy(s => s.StartTime).Take(5))
+                                    {
+                                        var totalCapacity = Model.TotalRows * Model.SeatsPerRow;
+                                        var reservedSeats = screening.Reservations?.Count ?? 0;
+                                        var availableSeats = totalCapacity - reservedSeats;
+                                        
+                                        <div class="list-group-item">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-1">@screening.MovieTitle</h6>
+                                                    <small class="text-muted">
+                                                        <i class="bi bi-clock"></i> 
+                                                        @screening.StartTime.ToString("MMM dd, yyyy h:mm tt")
+                                                    </small>
+                                                </div>
+                                                <div class="text-end">
+                                                    @if (availableSeats > 0)
+                                                    {
+                                                        <span class="badge bg-success mb-1">
+                                                            @availableSeats available
+                                                        </span>
+                                                        <br/>
+                                                        <small class="text-muted">
+                                                            @reservedSeats / @totalCapacity booked
+                                                        </small>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-danger mb-1">Sold Out</span>
+                                                        <br/>
+                                                        <small class="text-muted">
+                                                            @totalCapacity / @totalCapacity booked
+                                                        </small>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                
+                                @if (Model.Screenings.Count > 5)
+                                {
+                                    <p class="text-muted mt-2 mb-0">
+                                        <small>Showing 5 of @Model.Screenings.Count screenings</small>
+                                    </p>
+                                }
+                            }
+                            else
+                            {
+                                <div class="alert alert-info mb-0">
+                                    <i class="bi bi-info-circle"></i> No screenings scheduled for this cinema yet.
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4">
+                        @if (isAdmin)
+                        {
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                                <i class="bi bi-pencil"></i> Edit Cinema
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Delete Cinema
+                            </a>
+                        }
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

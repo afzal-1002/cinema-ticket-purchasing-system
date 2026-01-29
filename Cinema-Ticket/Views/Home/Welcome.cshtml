@@ -1,0 +1,34 @@
+@{
+    ViewData["Title"] = "Welcome to CinemaTicket";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <div class="row justify-content-center" style="margin-top: 120px;">
+        <div class="col-lg-8 text-center">
+            <h1 class="display-3 fw-normal mb-4">Welcome to San Matiket</h1>
+            <p class="lead text-muted mb-5">Book tickets, manage reservations, and enjoy the show.</p>
+            
+            @{ var isAdmin = Context.Session.GetString("IsAdmin") == "true"; }
+            <div class="d-flex justify-content-center gap-3">
+                @if (isAdmin)
+                {
+                    <a asp-controller="Screenings" asp-action="Index" class="btn btn-primary btn-lg px-4">
+                        <i class="bi bi-film me-2"></i> Screenings
+                    </a>
+                    <a asp-controller="Cinema" asp-action="Index" class="btn btn-primary btn-lg px-4">
+                        <i class="bi bi-building me-2"></i> Cinema Halls
+                    </a>
+                    <a asp-controller="Screenings" asp-action="Index" class="btn btn-outline-primary btn-lg px-4">
+                        <i class="bi bi-ticket-perforated me-2"></i> Buy Tickets
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Screenings" asp-action="Index" class="btn btn-primary btn-lg px-5">Buy Tickets</a>
+                    <a asp-controller="Users" asp-action="Details" asp-route-id="@Context.Session.GetInt32("UserId")" class="btn btn-outline-secondary btn-lg px-5">My Account</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

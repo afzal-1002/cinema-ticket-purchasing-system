@@ -1,0 +1,5 @@
+{
+  "omnisharp.useModernNet": true,
+  "omnisharp.path": "latest",
+  "C_Cpp.intelliSenseEngine": "Default"
+}

@@ -1,0 +1,370 @@
+@* filepath: /home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Home/Dashboard.cshtml *@
+@using CinemaTicket.Helpers
+@{
+    ViewData["Title"] = "Dashboard - Cinema Ticket";
+    var reservations = ViewBag.UserReservations as IEnumerable<dynamic>;
+    var upcomingMovies = ViewBag.UpcomingMovies as IDictionary<string, IEnumerable<dynamic>>;
+    var upcomingTitles = ViewBag.UpcomingMovieTitles as IEnumerable<string>;
+    var upcomingCards = ViewBag.UpcomingMovieCards as IEnumerable<dynamic>;
+    var searchQuery = ViewBag.SearchQuery as string;
+    var isAdmin = Context.Session.IsAdmin();
+    var isLoggedIn = Context.Session.IsUserLoggedIn();
+    var username = Context.Session.GetUsername();
+}
+
+<div class="container mt-4">
+    <!-- Welcome Section -->
+    <div class="mb-4 text-center">
+        <h2 class="h3 mb-3">
+            <i class="bi bi-film me-2"></i>Welcome to Cinema Ticket
+            @if (isLoggedIn)
+            {
+                <small class="text-muted">(@username)</small>
+            }
+        </h2>
+        
+        <!-- Admin Management Panel -->
+        @if (isAdmin)
+        {
+            <div class="alert alert-info mb-3" role="alert">
+                <i class="bi bi-shield-check me-2"></i>
+                <strong>Admin Dashboard:</strong> Manage your cinema system
+            </div>
+            
+            <div class="row g-2 mb-3">
+                <!-- Screening Management -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center shadow-sm admin-card">
+                        <div class="card-body">
+                            <i class="bi bi-film fs-1 text-primary mb-2"></i>
+                            <h6 class="card-title">Screenings</h6>
+                            <div class="d-grid gap-2">
+                                <a asp-controller="Screenings" asp-action="Create" class="btn btn-sm btn-success">
+                                    <i class="bi bi-plus-circle me-1"></i>Add New
+                                </a>
+                                <a asp-controller="Screenings" asp-action="Index" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-list me-1"></i>Manage All
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cinema Management -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center shadow-sm admin-card">
+                        <div class="card-body">
+                            <i class="bi bi-building fs-1 text-warning mb-2"></i>
+                            <h6 class="card-title">Cinemas</h6>
+                            <div class="d-grid gap-2">
+                                <a asp-controller="Cinemas" asp-action="Create" class="btn btn-sm btn-success">
+                                    <i class="bi bi-plus-circle me-1"></i>Add New
+                                </a>
+                                <a asp-controller="Cinemas" asp-action="Index" class="btn btn-sm btn-warning">
+                                    <i class="bi bi-list me-1"></i>Manage All
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Management -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center shadow-sm admin-card">
+                        <div class="card-body">
+                            <i class="bi bi-people fs-1 text-info mb-2"></i>
+                            <h6 class="card-title">Users</h6>
+                            <div class="d-grid gap-2">
+                                <a asp-controller="Users" asp-action="Create" class="btn btn-sm btn-success">
+                                    <i class="bi bi-person-plus me-1"></i>Add New
+                                </a>
+                                <a asp-controller="Users" asp-action="UserList" class="btn btn-sm btn-info">
+                                    <i class="bi bi-list me-1"></i>Manage All
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reservation Overview -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 text-center shadow-sm admin-card">
+                        <div class="card-body">
+                            <i class="bi bi-ticket-perforated fs-1 text-danger mb-2"></i>
+                            <h6 class="card-title">Reservations</h6>
+                            <div class="d-grid gap-2">
+                                <a asp-controller="Reservations" asp-action="Index" class="btn btn-sm btn-danger">
+                                    <i class="bi bi-list me-1"></i>View All
+                                </a>
+                                <span class="text-muted small">System-wide</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4" />
+        }
+        
+        <!-- User Action Buttons -->
+        <div>
+            <a asp-controller="Screenings" asp-action="Index" class="btn btn-primary btn-lg">
+                <i class="bi bi-ticket-perforated me-1"></i>Browse All Screenings
+            </a>
+            @if (isLoggedIn)
+            {
+                <a asp-controller="Profile" asp-action="MyBookings" class="btn btn-outline-secondary btn-lg ms-2">
+                    <i class="bi bi-bookmark-check me-1"></i>My Bookings
+                </a>
+            }
+        </div>
+    </div>
+
+    <!-- User Reservations Section -->
+    @if (isLoggedIn)
+    {
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-bookmark-star me-2"></i>Your Upcoming Reservations
+                </h5>
+            </div>
+            <div class="card-body">
+                @if (reservations == null || !reservations.Any())
+                {
+                    <div class="alert alert-light mb-0" role="alert">
+                        <i class="bi bi-info-circle me-2"></i>
+                        No reservations found. <a asp-controller="Screenings" asp-action="Index" class="alert-link">Book your first ticket!</a>
+                    </div>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var r in reservations)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>@r.MovieTitle</strong>
+                                    <br>
+                                    <small class="text-muted">
+                                        <i class="bi bi-calendar-event me-1"></i>@r.StartTime.ToString("MMM dd, yyyy HH:mm")
+                                        <i class="bi bi-geo-alt ms-2 me-1"></i>Seat @r.SeatNumber
+                                    </small>
+                                </div>
+                                <div>
+                                    <form asp-controller="Reservations" asp-action="Cancel" method="post" class="d-inline"
+                                          onsubmit="return confirm('Are you sure you want to cancel this reservation?');">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@r.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-x-circle me-1"></i>Cancel
+                                        </button>
+                                    </form>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Search Bar -->
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h4 class="mb-0">
+            <i class="bi bi-calendar-week me-2"></i>Upcoming Screenings (Next 7 Days)
+        </h4>
+        <form method="get" asp-action="Index" class="d-flex">
+            <input type="text" name="q" value="@searchQuery" class="form-control form-control-sm me-2" 
+                   placeholder="Search movies..." style="min-width: 200px;" />
+            <button type="submit" class="btn btn-sm btn-primary">
+                <i class="bi bi-search"></i>
+            </button>
+            @if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                <a asp-action="Index" class="btn btn-sm btn-outline-secondary ms-2" title="Clear search">
+                    <i class="bi bi-x-circle"></i>
+                </a>
+            }
+        </form>
+    </div>
+
+    <!-- Upcoming Movies Section -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            @if ((upcomingTitles == null || !upcomingTitles.Any()) && (upcomingMovies == null || !upcomingMovies.Any()))
+            {
+                <div class="alert alert-light mb-0" role="alert">
+                    <i class="bi bi-info-circle me-2"></i>
+                    No upcoming movies in the next 7 days. Check back soon!
+                </div>
+            }
+            else
+            {
+                @if (upcomingCards != null && upcomingCards.Any())
+                {
+                    <div class="mb-4">
+                        <h6 class="text-muted mb-3">
+                            <i class="bi bi-grid-3x3-gap me-1"></i>Quick View
+                        </h6>
+                        <div class="row g-3">
+                            @foreach (var card in upcomingCards)
+                            {
+                                <div class="col-sm-6 col-md-4 col-lg-3">
+                                    <div class="card h-100 border-primary movie-card">
+                                        <div class="card-body d-flex flex-column justify-content-between">
+                                            <div>
+                                                <h6 class="card-title">@card.Title</h6>
+                                                <p class="mb-0 text-muted">
+                                                    <i class="bi bi-ticket-perforated me-1"></i>
+                                                    <strong>@card.RemainingSeats</strong> seats available
+                                                </p>
+                                            </div>
+                                            <div class="mt-3 text-end">
+                                                <a asp-controller="Screenings" asp-action="Index" asp-route-q="@card.Title" 
+                                                   class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-eye me-1"></i>View Screenings
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <hr />
+                }
+
+                @if (upcomingMovies != null && upcomingMovies.Any())
+                {
+                    <h6 class="text-muted mb-3">
+                        <i class="bi bi-calendar3 me-1"></i>All Screenings
+                    </h6>
+                    <div class="row">
+                        @foreach (var movie in upcomingMovies)
+                        {
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="card h-100 shadow-sm screening-card">
+                                    <div class="card-header bg-light">
+                                        <h5 class="card-title mb-0">
+                                            @movie.Key 
+                                            <span class="badge bg-secondary float-end">@movie.Value.Count() showing(s)</span>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="list-group list-group-flush">
+                                            @foreach (var screening in movie.Value)
+                                            {
+                                                <div class="list-group-item screening-item">
+                                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                                        <div>
+                                                            <small class="text-muted">
+                                                                <i class="bi bi-calendar-event me-1"></i>
+                                                                @screening.StartTime.ToString("MMM dd, yyyy")
+                                                            </small>
+                                                            <br>
+                                                            <small class="text-muted">
+                                                                <i class="bi bi-clock me-1"></i>
+                                                                @screening.StartTime.ToString("HH:mm")
+                                                            </small>
+                                                        </div>
+                                                        <span class="badge bg-success">@screening.AvailableSeats seats</span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <small>
+                                                            <i class="bi bi-building me-1"></i>@screening.CinemaName
+                                                        </small>
+                                                        <a asp-controller="Reservations" asp-action="SeatMap" asp-route-id="@screening.Id" 
+                                                           class="btn btn-primary btn-sm">
+                                                            <i class="bi bi-box-arrow-in-right me-1"></i>Book Now
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        /* Base card transitions */
+        .card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+
+        /* Admin panel cards */
+        .admin-card {
+            border: 1px solid #dee2e6;
+        }
+
+        .admin-card:hover {
+            border-color: #0d6efd;
+            transform: translateY(-5px);
+        }
+
+        /* Movie quick view cards */
+        .movie-card {
+            transition: all 0.3s ease;
+        }
+
+        .movie-card:hover {
+            border-color: #0d6efd;
+            box-shadow: 0 0.5rem 1rem rgba(13, 110, 253, 0.25) !important;
+        }
+
+        /* Screening cards */
+        .screening-card {
+            border: 1px solid #e0e0e0;
+        }
+
+        .screening-card:hover {
+            border-color: #0d6efd;
+        }
+
+        /* Screening items */
+        .screening-item {
+            transition: background-color 0.2s ease;
+        }
+
+        .screening-item:hover {
+            background-color: rgba(0, 123, 255, 0.05);
+        }
+
+        /* List group items */
+        .list-group-item {
+            transition: background-color 0.2s ease;
+        }
+
+        .list-group-item:hover {
+            background-color: rgba(0, 123, 255, 0.03);
+        }
+
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+            .flex-wrap {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            
+            .flex-wrap form {
+                width: 100%;
+            }
+            
+            .flex-wrap input {
+                min-width: 100% !important;
+            }
+        }
+    </style>
+}

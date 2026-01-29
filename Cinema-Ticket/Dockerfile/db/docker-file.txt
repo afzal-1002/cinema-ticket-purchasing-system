@@ -1,0 +1,121 @@
+# Remove old docker-compose (Python-based v1)
+sudo apt remove docker-compose
+
+# Install Docker Compose V2 plugin (via Docker's official repository)
+sudo apt update
+sudo apt install docker-compose-plugin
+
+# Verify installation (note: command is now 'docker compose' not 'docker-compose')
+docker compose version
+
+
+sudo apt  install docker-compose
+
+# From repo root
+cd ~/Desktop/Afzal/M.Sc\ Computer\ Science/Semester\ 4/Semester\ 4/EGUI/Cinema-Ticket
+
+# ✅ Execute the updated init.sql
+docker exec -i cinema-mysql mysql -uroot -prootpassword cinema_db < Dockerfile/db/init.sql
+
+# ✅ Verify the data was inserted
+docker exec -it cinema-mysql mysql -uroot -prootpassword cinema_db -e "SELECT Username, FirstName, LastName, IsAdmin FROM Users;"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Check container status
+docker ps -a
+
+# Check MySQL logs
+docker logs cinema-mysql | tail -50
+
+# Check container health
+docker inspect cinema-mysql | grep -A 10 "Health"
+
+# Test MySQL connection
+docker exec -it cinema-mysql mysql -u root -prootpassword -e "SELECT VERSION();"
+
+# Verify database exists
+docker exec -it cinema-mysql mysql -u root -prootpassword -e "SHOW DATABASES;"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# From /home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket
+cd ~/Desktop/Afzal/M.Sc\ Computer\ Science/Semester\ 4/Semester\ 4/EGUI/Cinema-Ticket
+
+# Stop and remove old containers (if any)
+docker compose down -v
+
+# Start with new init.sql data
+docker compose up -d --build
+
+# Verify database is running
+docker compose ps
+
+# Check logs
+docker compose logs db
+
+
+# From repo root
+cd ~/Desktop/Afzal/M.Sc\ Computer\ Science/Semester\ 4/Semester\ 4/EGUI/Cinema-Ticket
+
+# ✅ Connect as root with correct password "rootpassword"
+docker exec -it cinema-mysql mysql -uroot -prootpassword -e "SHOW DATABASES;"
+
+# ✅ Connect to cinema_db database
+docker exec -it cinema-mysql mysql -uroot -prootpassword cinema_db -e "SHOW TABLES;"
+
+# ✅ OR use non-root user (cinema_user)
+docker exec -it cinema-mysql mysql -ucinema_user -pcinema_pass cinema_db -e "SHOW TABLES;"
+
+
+
+# From repo root
+cd ~/Desktop/Afzal/M.Sc\ Computer\ Science/Semester\ 4/Semester\ 4/EGUI/Cinema-Ticket
+
+# Step 1: List all containers (including stopped ones)
+docker ps -a | grep cinema
+
+# Step 2: Remove the conflicting container (force remove even if running)
+docker rm -f cinema-mysql
+
+# Step 3: Clean up any orphaned volumes (optional but recommended)
+docker volume prune -f
+
+# Step 4: Now start fresh with new init.sql data
+docker compose down -v  # Ensures everything is clean
+docker compose up -d --build
+
+# Step 5: Verify containers are running
+docker compose ps
+
+# Step 6: Check database logs (correct service name from docker-compose.yml)
+docker compose logs mysql

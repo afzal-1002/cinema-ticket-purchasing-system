@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  cinema-mysql:
+    image: mysql:8.0
+    container_name: cinema-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: cinema_db
+      MYSQL_USER: cinema_user
+      MYSQL_PASSWORD: cinema_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      # ✅ Auto-run init.sql on first startup
+      - ./Dockerfile/db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpassword"]
+      timeout: 5s
+      retries: 10
+
+volumes:
+  db_data:

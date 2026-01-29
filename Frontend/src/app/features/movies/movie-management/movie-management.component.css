@@ -74,8 +74,13 @@ button.danger {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.grid > form,
+.grid > .movie-list {
+  width: 100%;
 }
 
 form {
@@ -203,6 +208,10 @@ button.primary:disabled,
   text-transform: uppercase;
 }
 
+.table-head span {
+  text-align: center;
+}
+
 .row {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
@@ -212,6 +221,10 @@ button.primary:disabled,
   border-radius: 0.9rem;
   background: rgba(15, 23, 42, 0.6);
   border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.row > div:not(.actions) {
+  text-align: center;
 }
 
 .row h3 {
@@ -247,6 +260,7 @@ button.primary:disabled,
   display: flex;
   gap: 0.4rem;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .actions button {

@@ -1,0 +1,207 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = CinemaTicket
+build_property.RootNamespace = CinemaTicket
+build_property.ProjectDir = /home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket
+build_property._RazorSourceGeneratorDebug = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Cinema/Cinema-Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2luZW1hL0NpbmVtYS1DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Cinema/Cinema-Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2luZW1hL0NpbmVtYS1EZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Cinema/Cinema-Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2luZW1hL0NpbmVtYS1EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Cinema/Cinema-Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2luZW1hL0NpbmVtYS1FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Cinema/Cinema-Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2luZW1hL0NpbmVtYS1JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Cinema/_CinemaDetailsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2luZW1hL19DaW5lbWFEZXRhaWxzUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Home/Dashboard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9EYXNoYm9hcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Home/Welcome.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9XZWxjb21lLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Movie/Movie-Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTW92aWUvTW92aWUtRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Movie/Movie-Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTW92aWUvTW92aWUtSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Movie/Movie-Screening.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTW92aWUvTW92aWUtU2NyZWVuaW5nLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Profile/MyBookings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZmlsZS9NeUJvb2tpbmdzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Reservations/Reservation-Edit-Conflict.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVzZXJ2YXRpb25zL1Jlc2VydmF0aW9uLUVkaXQtQ29uZmxpY3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Reservations/Reservation-Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVzZXJ2YXRpb25zL1Jlc2VydmF0aW9uLUVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Reservations/Reservation-View.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVzZXJ2YXRpb25zL1Jlc2VydmF0aW9uLVZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Reservations/SeatMap.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVzZXJ2YXRpb25zL1NlYXRNYXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Screenings/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5ncy9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Screenings/Screening-Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5ncy9TY3JlZW5pbmctQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Screenings/Screening-Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5ncy9TY3JlZW5pbmctRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Screenings/Screening-Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5ncy9TY3JlZW5pbmctRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Screenings/Screening-Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5ncy9TY3JlZW5pbmctSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Screenings/Screening-List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NyZWVuaW5ncy9TY3JlZW5pbmctTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Shared/_AjaxModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19BamF4TW9kYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Shared/_ConfirmDeleteModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19Db25maXJtRGVsZXRlTW9kYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Test/AdminConcurrencyTest.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVzdC9BZG1pbkNvbmN1cnJlbmN5VGVzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Test/ConcurrencyDemo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVzdC9Db25jdXJyZW5jeURlbW8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Test/SessionDebug.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVGVzdC9TZXNzaW9uRGVidWcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Users/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Users/Home.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvSG9tZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Users/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Users/User-ChangePassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvVXNlci1DaGFuZ2VQYXNzd29yZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Users/User-Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvVXNlci1DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Users/User-Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvVXNlci1EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Users/User-Edit-Conflict.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvVXNlci1FZGl0LUNvbmZsaWN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Users/User-Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvVXNlci1FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Users/User-Home.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvVXNlci1Ib21lLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Users/User-Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvVXNlci1JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Users/User-List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvVXNlci1MaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Users/User-Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvVXNlci1Mb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Users/User-Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvVXNlci1SZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Users/User-SignUp.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVXNlcnMvVXNlci1TaWduVXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-nptbxopsfh

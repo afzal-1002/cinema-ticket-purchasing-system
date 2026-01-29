@@ -1,0 +1,88 @@
+@{
+    ViewData["Title"] = "Session Debug";
+    var userId = Context.Session.GetString("UserId");
+    var username = Context.Session.GetString("Username");
+    var isAdmin = Context.Session.GetString("IsAdmin");
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <h3>🔍 Session Debug Information</h3>
+        </div>
+        <div class="card-body">
+            <h5>Current Session Values:</h5>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td><strong>UserId</strong></td>
+                    <td><code>@(string.IsNullOrEmpty(userId) ? "(empty)" : userId)</code></td>
+                    <td>
+                        @if (string.IsNullOrEmpty(userId))
+                        {
+                            <span class="badge bg-danger">❌ MISSING</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">✅ OK</span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Username</strong></td>
+                    <td><code>@(string.IsNullOrEmpty(username) ? "(empty)" : username)</code></td>
+                    <td>
+                        @if (string.IsNullOrEmpty(username))
+                        {
+                            <span class="badge bg-danger">❌ MISSING</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">✅ OK</span>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>IsAdmin</strong></td>
+                    <td><code>@(string.IsNullOrEmpty(isAdmin) ? "(empty)" : isAdmin)</code></td>
+                    <td>
+                        @if (string.IsNullOrEmpty(isAdmin))
+                        {
+                            <span class="badge bg-danger">❌ MISSING</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">✅ OK</span>
+                        }
+                    </td>
+                </tr>
+            </table>
+
+            @if (string.IsNullOrEmpty(userId))
+            {
+                <div class="alert alert-danger">
+                    <h5>⚠️ YOU ARE NOT LOGGED IN!</h5>
+                    <p>Your session is empty or corrupted. Please follow these steps:</p>
+                    <ol>
+                        <li><strong>Clear browser cookies:</strong> Press Ctrl+Shift+Delete</li>
+                        <li><strong>OR use Incognito window:</strong> Press Ctrl+Shift+N</li>
+                        <li><strong>Login again:</strong> Use admin / admin123</li>
+                    </ol>
+                    <a href="/Users/Login" class="btn btn-primary">Go to Login Page</a>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-success">
+                    <h5>✅ Session is Valid!</h5>
+                    <p>You are logged in as: <strong>@username</strong></p>
+                    <a href="/Screenings/Index" class="btn btn-success">Go to Manage Screenings</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

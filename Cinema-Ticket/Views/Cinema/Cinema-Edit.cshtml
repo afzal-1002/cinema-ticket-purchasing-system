@@ -1,0 +1,78 @@
+@model CinemaTicket.Models.Entities.Cinema
+
+@{
+    ViewData["Title"] = "Edit Cinema";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-warning">
+                    <h3 class="mb-0">
+                        <i class="bi bi-pencil me-2"></i>Edit Cinema
+                    </h3>
+                </div>
+                <div class="card-body">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
+                    <form asp-action="Edit" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+                        
+                        @* ✅ ADDED: Hidden field for RowVersion (as Base64 string) *@
+                        <input type="hidden" name="rowVersionBase64" value="@ViewBag.RowVersion" />
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label">Cinema Name</label>
+                            <input asp-for="Name" class="form-control" required />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="RoomNumber" class="form-label">Room Number</label>
+                            <input asp-for="RoomNumber" type="number" class="form-control" min="1" required />
+                            <span asp-validation-for="RoomNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="TotalRows" class="form-label">Total Rows</label>
+                            <input asp-for="TotalRows" type="number" class="form-control" min="1" max="26" required />
+                            <span asp-validation-for="TotalRows" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="SeatsPerRow" class="form-label">Seats Per Row</label>
+                            <input asp-for="SeatsPerRow" type="number" class="form-control" min="1" max="50" required />
+                            <span asp-validation-for="SeatsPerRow" class="text-danger"></span>
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle me-1"></i>
+                            <strong>Warning:</strong> Changing seat configuration may affect existing screenings and reservations.
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-save me-2"></i>Update Cinema
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

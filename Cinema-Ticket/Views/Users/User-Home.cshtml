@@ -1,0 +1,70 @@
+﻿@model IEnumerable<CinemaTicket.Models.Entities.User>
+
+@{
+    ViewData["Title"] = "Users List";
+    var searchQuery = ViewContext.HttpContext.Request.Query["search"];
+}
+
+<h2 class="my-4">Users List</h2>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a asp-action="Create" class="btn btn-success">Add New User</a>
+    <form method="get" asp-controller="Users" asp-action="Home" class="d-flex">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control rounded-pill"
+                   placeholder="Search by Attribute..." value="@searchQuery" />
+            <button type="submit" class="btn btn-outline-secondary rounded-pill ms-2">
+                <i class="bi bi-search"></i>
+            </button>
+        </div>
+    </form>
+
+        <a asp-controller="Users" asp-action="Index" class="btn btn-secondary">Back</a>
+    
+</div>
+
+@if (!Model.Any())
+{
+    <p>No users available.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Username</td>
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                    <td>@user.Email</td>
+                    <td>@user.PhoneNumber</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-primary btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-danger btn-sm" data-confirm="Are you sure you want to delete this user?">Delete</a>
+                        <a asp-action="ChangePassword" asp-route-id="@user.Id" class="btn btn-warning btn-sm">Change Password</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    
+}

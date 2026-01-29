@@ -57,6 +57,16 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                    "/",
+                    "/index.html",
+                    "/favicon.ico",
+                    "/3rdpartylicenses.txt",
+                    "/assets/**",
+                    "/**/*.js",
+                    "/**/*.css",
+                    "/**/*.html"
+                ).permitAll()
                 .requestMatchers("/api/auth/**", "/h2-console/**").permitAll()
                 .requestMatchers("/api/cinemas/**", "/api/screenings/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")

@@ -1,0 +1,116 @@
+@* filepath: /home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Cinema/Cinema-Delete.cshtml *@
+@model CinemaTicket.Models.Entities.Cinema
+
+@{
+    ViewData["Title"] = "Delete Cinema";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-exclamation-triangle-fill"></i> Delete Cinema
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <h5 class="alert-heading">⚠️ Warning: Destructive Action</h5>
+                        <p>
+                            You are about to permanently delete the cinema <strong>@Model.Name (@Model.RoomNumber)</strong>.
+                        </p>
+                        <hr>
+                        <p class="mb-0">
+                            <strong>This action will:</strong>
+                        </p>
+                        <ul>
+                            <li>Delete <strong>@Model.Name</strong> cinema hall</li>
+                            <li>Delete <strong>all screenings</strong> scheduled in this cinema</li>
+                            <li>Cancel <strong>all reservations</strong> for those screenings</li>
+                        </ul>
+                        <p class="text-danger mb-0">
+                            <i class="bi bi-exclamation-circle"></i> This action <strong>cannot be undone</strong>!
+                        </p>
+                    </div>
+
+                    <h5 class="mt-4">Cinema Details:</h5>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <dl class="row mb-0">
+                                <dt class="col-sm-4">Cinema Name:</dt>
+                                <dd class="col-sm-8">@Model.Name</dd>
+
+                                <dt class="col-sm-4">Room Number:</dt>
+                                <dd class="col-sm-8">@Model.RoomNumber</dd>
+
+                                <dt class="col-sm-4">Total Rows:</dt>
+                                <dd class="col-sm-8">@Model.TotalRows</dd>
+
+                                <dt class="col-sm-4">Seats Per Row:</dt>
+                                <dd class="col-sm-8">@Model.SeatsPerRow</dd>
+
+                                <dt class="col-sm-4">Total Capacity:</dt>
+                                <dd class="col-sm-8">
+                                    <strong>@(Model.TotalRows * Model.SeatsPerRow) seats</strong>
+                                </dd>
+
+                                @if (ViewBag.ScreeningCount != null)
+                                {
+                                    <dt class="col-sm-4">Active Screenings:</dt>
+                                    <dd class="col-sm-8">
+                                        @if (ViewBag.ScreeningCount > 0)
+                                        {
+                                            <span class="badge bg-warning text-dark">@ViewBag.ScreeningCount screenings</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">No active screenings</span>
+                                        }
+                                    </dd>
+                                }
+
+                                @if (ViewBag.ReservationCount != null)
+                                {
+                                    <dt class="col-sm-4">Active Reservations:</dt>
+                                    <dd class="col-sm-8">
+                                        @if (ViewBag.ReservationCount > 0)
+                                        {
+                                            <span class="badge bg-danger">@ViewBag.ReservationCount reservations will be canceled</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">No active reservations</span>
+                                        }
+                                    </dd>
+                                }
+                            </dl>
+                        </div>
+                    </div>
+
+                    <form asp-action="DeleteConfirmed" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+                        
+                        <div class="d-flex gap-2 mt-4">
+                            <button type="submit" class="btn btn-danger" 
+                                    onclick="return confirm('⚠️ Are you absolutely sure? This will delete the cinema and ALL its screenings and reservations!');">
+                                <i class="bi bi-trash-fill"></i> Yes, Delete Cinema
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <small class="text-muted">
+                    <i class="bi bi-info-circle"></i> 
+                    Cascade deletion: Deleting this cinema will automatically remove all associated screenings and reservations from the database.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,148 @@
+@* filepath: /home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Screenings/Index.cshtml *@
+@model IEnumerable<CinemaTicket.Models.Entities.Screening>
+
+@{
+    ViewData["Title"] = "Manage Screenings";
+}
+
+<style>
+    .hover-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
+    }
+    
+    .card-header {
+        border-bottom: 3px solid #ffc107;
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="bi bi-film"></i> Manage Screenings
+        </h2>
+        
+        @* ✅ Only show Add New Screening button for admins *@
+        @if (Context.Session.GetString("IsAdmin") == "True")
+        {
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Add New Screening
+            </a>
+        }
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> No screenings found. 
+            <a asp-action="Create" class="alert-link">Add your first screening!</a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var screening in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 shadow-sm hover-card">
+                        <div class="card-header bg-dark text-white">
+                            <h5 class="card-title mb-0">
+                                <i class="bi bi-film"></i> @screening.MovieTitle
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <h6 class="text-muted mb-2">
+                                    <i class="bi bi-building"></i> Cinema Details
+                                </h6>
+                                <p class="mb-1">
+                                    <strong>@screening.Cinema?.Name</strong>
+                                </p>
+                                <p class="mb-0 text-muted">
+                                    <i class="bi bi-door-open"></i> @screening.Cinema?.RoomNumber
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6 class="text-muted mb-2">
+                                    <i class="bi bi-clock"></i> Schedule
+                                </h6>
+                                <p class="mb-1">
+                                    <i class="bi bi-calendar-event text-success"></i> 
+                                    <strong>Start:</strong> @screening.StartTime.ToString("MMM dd, yyyy")
+                                </p>
+                                <p class="mb-1 ms-3">
+                                    <i class="bi bi-clock-fill text-success"></i> @screening.StartTime.ToString("h:mm tt")
+                                </p>
+                                <p class="mb-1">
+                                    <i class="bi bi-calendar-x text-danger"></i> 
+                                    <strong>End:</strong> @screening.EndTime.ToString("MMM dd, yyyy")
+                                </p>
+                                <p class="mb-0 ms-3">
+                                    <i class="bi bi-clock-fill text-danger"></i> @screening.EndTime.ToString("h:mm tt")
+                                </p>
+                            </div>
+
+                            <div class="mb-2">
+                                <small class="text-muted">
+                                    <i class="bi bi-hash"></i> ID: @screening.Id
+                                </small>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-light">
+                            <div class="d-grid gap-2">
+                                @* ✅ Book Ticket Button (always visible) *@
+                                <a asp-controller="Reservations" asp-action="SeatMap" asp-route-id="@screening.Id" 
+                                   class="btn btn-success">
+                                    <i class="bi bi-ticket-perforated"></i> Book Ticket
+                                </a>
+                                
+                                @* ✅ Only show Update/Delete for admins *@
+                                @if (Context.Session.GetString("IsAdmin") == "True")
+                                {
+                                    <div class="btn-group" role="group">
+                                        @* ✅ Update Button *@
+                                        <a asp-action="Edit" asp-route-id="@screening.Id" 
+                                           class="btn btn-warning">
+                                            <i class="bi bi-pencil"></i> Update
+                                        </a>
+                                        
+                                        @* ✅ Delete Button *@
+                                        <form asp-action="Delete" asp-route-id="@screening.Id" 
+                                              method="post" class="flex-fill">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="btn btn-danger w-100" 
+                                                    onclick="return confirm('⚠️ Delete screening for @screening.MovieTitle?');">
+                                                <i class="bi bi-trash"></i> Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

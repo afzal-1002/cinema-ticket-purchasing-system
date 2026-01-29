@@ -1,0 +1,120 @@
+@* filepath: /home/afzal1002/Desktop/Afzal/M.Sc Computer Science/Semester 4/Semester 4/EGUI/Cinema-Ticket/Views/Users/User-Edit-Conflict.cshtml *@
+@model CinemaTicket.Models.Entities.User
+
+@{
+    ViewData["Title"] = "Edit Conflict - User";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-exclamation-triangle-fill"></i> Concurrency Conflict Detected
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <h5 class="alert-heading">⚠️ Data Conflict</h5>
+                        <p>
+                            The user record for <strong>@Model.Username</strong> has been modified by another user 
+                            since you started editing. Your changes cannot be saved.
+                        </p>
+                        <hr>
+                        <p class="mb-0">
+                            <strong>Options:</strong>
+                        </p>
+                        <ul>
+                            <li>Click <strong>Reload Current Values</strong> to discard your changes and see the latest data.</li>
+                            <li>Click <strong>Override Changes</strong> to force-save your version (replaces other user's changes).</li>
+                            <li>Click <strong>Cancel</strong> to return to the user list.</li>
+                        </ul>
+                    </div>
+
+                    <h5 class="mt-4">Your Attempted Changes:</h5>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <dl class="row mb-0">
+                                <dt class="col-sm-3">Username:</dt>
+                                <dd class="col-sm-9">@Model.Username</dd>
+
+                                <dt class="col-sm-3">Email:</dt>
+                                <dd class="col-sm-9">@Model.Email</dd>
+
+                                <dt class="col-sm-3">First Name:</dt>
+                                <dd class="col-sm-9">@Model.FirstName</dd>
+
+                                <dt class="col-sm-3">Last Name:</dt>
+                                <dd class="col-sm-9">@Model.LastName</dd>
+
+                                <dt class="col-sm-3">Phone Number:</dt>
+                                <dd class="col-sm-9">@Model.PhoneNumber</dd>
+
+                                <dt class="col-sm-3">Admin Status:</dt>
+                                <dd class="col-sm-9">
+                                    @if (Model.IsAdmin)
+                                    {
+                                        <span class="badge bg-danger">Admin</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Regular User</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 d-flex gap-2">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                            <i class="bi bi-arrow-clockwise"></i> Reload Current Values
+                        </a>
+                        
+                        <form asp-action="Edit" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="Username" />
+                            <input type="hidden" asp-for="Password" />
+                            <input type="hidden" asp-for="Email" />
+                            <input type="hidden" asp-for="FirstName" />
+                            <input type="hidden" asp-for="LastName" />
+                            <input type="hidden" asp-for="PhoneNumber" />
+                            <input type="hidden" asp-for="IsAdmin" />
+                            <input type="hidden" name="forceOverride" value="true" />
+                            
+                            <button type="submit" class="btn btn-warning" 
+                                    onclick="return confirm('⚠️ Are you sure? This will overwrite another user\'s changes.');">
+                                <i class="bi bi-exclamation-circle"></i> Override Changes
+                            </button>
+                        </form>
+
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <small class="text-muted">
+                    <i class="bi bi-info-circle"></i> 
+                    Concurrency conflicts occur when multiple users edit the same record simultaneously. 
+                    The database uses row versioning (RowVersion timestamp) to detect conflicts.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-focus on reload button
+        document.addEventListener('DOMContentLoaded', function() {
+            const reloadBtn = document.querySelector('.btn-primary');
+            if (reloadBtn) {
+                reloadBtn.focus();
+            }
+        });
+    </script>
+}

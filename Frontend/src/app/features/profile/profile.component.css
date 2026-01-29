@@ -1,4 +1,4 @@
-:root {
+:host {
   --profile-bg: linear-gradient(140deg, #f8fafc 0%, #e2e8f0 45%, #e0e7ff 100%);
   --panel-bg: rgba(255, 255, 255, 0.92);
   --ink: #0f172a;
